@@ -1,0 +1,164 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LeetCode Solutions 11-20 | Pika</title>
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562916660396">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://pikameow.github.io/">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562916660396" alt="">
+  </a>
+  <h1 class="site-title">
+    Pika
+  </h1>
+  <p class="site-description">
+    May you shine up with the stars
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              LeetCode Solutions 11-20
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2018-09-04 ·
+              </time>
+              
+                <a href="https://pikameow.github.io//tag/leetcode" class="post-tag">
+                  # LeetCode
+                </a>
+              
+                <a href="https://pikameow.github.io//tag/algorithm" class="post-tag">
+                  # Algorithm
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://pikameow.github.io//post-images/leetcode-solutions-11-20.png')">
+              </div>
+            
+            <div class="post-content">
+              <h4 id="13-roman-to-integer">13. Roman to Integer</h4>
+<p><code>easy</code> <code>2019-02-10</code></p>
+<p>除了通过许多if和else语句逐个判断的naive方法外，考虑到输入的罗马数字“一定合法”，因此对于相邻的两个字符，根据前者和后者的大小关系，选择增或减前者的大小即可。</p>
+<p>再使用<strong>unordered_map</strong>容器存储字符与数字的映射关系，通过Hash桶的存储方式，可以在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>时间内完成插入、删除和查找操作。</p>
+<pre><code class="language-cpp">if(s.empty()) return 0;
+unordered_map&lt;char, int&gt; m={{'I',1}, {'V',5}, {'X',10}, {'L',50},
+                            {'C',100}, {'D',500}, {'M',1000}};
+int num=m[s.back()];
+for(int i=s.size()-2;i&gt;=0;i--) {
+    num += (m[s[i]]&gt;=m[s[i+1]]?m[s[i]]:-m[s[i]]); // 如果前者小于后者，那么减去前者
+}
+return num;
+</code></pre>
+<hr>
+<h4 id="14-longest-common-prefix">14. Longest Common Prefix</h4>
+<p><code>easy</code> <code>2019-02-10</code></p>
+<p>将字符串对齐然后逐个比较即可。注意几点语法tips:</p>
+<ol>
+<li>for循环中遍历容器时，循环变量类型用 <code>size_t</code> 而非 <code>int</code></li>
+<li>对 string 进行截断可以用函数 <code>resize(len)</code>，表示将原字符串截断至长度<code>len</code></li>
+<li>记得处理边界情况：字符串数组为空</li>
+</ol>
+<pre><code class="language-cpp">if(strs.empty()) return &quot;&quot;;
+string prefix;
+for(size_t c_idx=0;c_idx&lt;strs[0].size();prefix+=strs[0][c_idx++]) {
+    for(size_t str_idx=1;str_idx&lt;strs.size();str_idx++) {
+        if(c_idx&gt;=strs[str_idx].size() || strs[str_idx][c_idx]!=strs[0][c_idx]) 
+            return prefix;
+    }
+}
+return prefix;
+</code></pre>
+<hr>
+<h4 id="20-valid-parentheses">20. Valid Parentheses</h4>
+<p><code>easy</code> <code>2019-03-01</code></p>
+<p>使用<code>stack</code>数据结构来进行匹配判断，注意在取栈顶元素时要确认栈非空。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://pikameow.github.io//post/leetcode-solutions-1-10">
+              <h3 class="post-title">
+                LeetCode Solutions 1-10
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">PikaMeow</a> | 
+  <a class="rss" href="https://pikameow.github.io//atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
