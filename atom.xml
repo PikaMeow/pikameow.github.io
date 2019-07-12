@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://pikameow.github.io/</id>
     <title>Pika</title>
-    <updated>2019-07-12T12:29:21.126Z</updated>
+    <updated>2019-07-12T12:49:12.631Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://pikameow.github.io/"/>
     <link rel="self" href="https://pikameow.github.io//atom.xml"/>
@@ -17,6 +17,73 @@
         </link>
         <updated>2019-07-10T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<p>1</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LeetCode Solutions Remain]]></title>
+        <id>https://pikameow.github.io//post/leetcode-solutions-remain</id>
+        <link href="https://pikameow.github.io//post/leetcode-solutions-remain">
+        </link>
+        <updated>2019-07-01T12:47:32.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="1046-last-stone-weight">1046. Last Stone Weight</h4>
+<p><code>easy</code> <code>2019-07-12</code></p>
+<p>给定一个数组，每次从中取出2个最大的，然后将其相减后的绝对值再加回数组中，直到数组变空或者只剩下一个元素。可以通过最大堆来做，使用STL中的<code>priority_queue</code>即可。</p>
+<p>另外，针对“取数组中最大的k个数”，可以使用  partial sort，即</p>
+<pre><code class="language-cpp">partial_sort(stones.begin(), stones.begin() + k, stones.end(), greater&lt;int&gt;());
+// 同样，取最小k个数只需要修改比较函数为 less&lt;int&gt;()
+</code></pre>
+<p>得到的前k个数就是按照降序排好的<code>k</code>个最大的数。</p>
+<hr>
+<h4 id="1078-occurrences-after-bigram">1078. Occurrences After Bigram</h4>
+<p><code>easy</code> <code>2019-07-12</code></p>
+<p>有2种思路，一种是将<strong>词</strong>作为基本单位，一种是将<strong>字符</strong>作为基本单位。对于前者，可以使用<code>string</code>类的操作可以很方便地完成查找。</p>
+<pre><code class="language-cpp">vector&lt;string&gt; v,a;
+stringstream s(text);  
+string word; 
+while (s &gt;&gt; word) a.push_back(word); // 构造为&quot;词&quot;的数组
+for(int i=0;i&lt;a.size()-1;i++)
+  	if(a[i]==first &amp;&amp; a[i+1]==second &amp;&amp; i+2&lt;a.size()) v.push_back(a[i+2]);
+return v;
+</code></pre>
+<p>对于后者，使用基于字符的查找，就可以将first和second合并成一个字符串，并且使用已有的字符串匹配算法进行查找，这里使用了kmp算法。其中<code>pattern = first + ' ' + second + ' '</code></p>
+<pre><code class="language-cpp">void kmp_init(string pattern, vector&lt;int&gt; &amp;next) {
+  	next[0] = 0;
+  	int k = 0, q = 1;
+  	while (q &lt; pattern.size()) {
+    		while (k &amp;&amp; pattern[k] != pattern[q]) k = next[k];
+    if (pattern[k] == pattern[q]) k++;
+    next[q++] = k;
+  	}
+}
+void kmp(string text, string pattern, vector&lt;string&gt; &amp;ans) {
+    vector&lt;int&gt; next(pattern.size());
+    kmp_init(pattern, next);
+    int i = 0, k = 0;
+    while (i &lt; text.size()) {
+        while (k &amp;&amp; text[i] != pattern[k]) k = next[k - 1]; // 注意这里的 k-1
+        if (text[i++] == pattern[k]) k++;
+        if (k == pattern.size() &amp;&amp; i &lt; text.size()) {
+            string tmp;
+            for (int j = i; j &lt; text.size() &amp;&amp; text[j] != ' '; j++) tmp.push_back(text[j]);
+            ans.push_back(tmp);
+            k = next[k - 1];
+      }
+    }
+}
+</code></pre>
+<hr>
+<h4 id="1089-duplicate-zeros">1089. Duplicate Zeros</h4>
+<p><code>easy</code> <code>2019-07-11</code></p>
+<p>首先要确定有多少位被重复的0挤出了数组。我们可以使用2个指针，指针<code>i</code>按照下标顺次增加，指针<code>j</code>根据指针<code>i</code>的值，如果碰到0，就多加1，直到加到数组末尾为止。</p>
+<p>之后开始从尾至头填充，需要分2种情况，即最后一个0重复之后是否还处在范围内。如果是，那么填充时仍然使用2个指针，指针<code>i</code>顺次减小，指针<code>j</code>根据指针<code>i</code>的值，如果碰到0，就多减1，并填充0，直到<code>i==j</code>，说明之前再没有0；如果不是，那么对最后一个0特殊处理，即在数尾端填充一个0，然后就不再考虑这个0，其余的按照上一种情况处理。</p>
+<pre><code class="language-cpp">int i, j, len = arr.size();
+for (i = 0, j = 0; i &lt; len &amp;&amp; j &lt; len; i++, j++) if (arr[i] == 0) j++;
+if (j &gt; len) { j--; arr[--j] = arr[--i]; }
+do {
+  arr[--j] = arr[--i];
+  if (arr[i] == 0) arr[--j] = 0;
+} while (i != j);
+</code></pre>
 ]]></content>
     </entry>
     <entry>
@@ -88,15 +155,6 @@
         <link href="https://pikameow.github.io//post/leetcode-solutions-241-250">
         </link>
         <updated>2019-04-21T16:00:00.000Z</updated>
-        <content type="html"><![CDATA[<p>1</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[LeetCode Solutions 231-240]]></title>
-        <id>https://pikameow.github.io//post/leetcode-solutions-231-240</id>
-        <link href="https://pikameow.github.io//post/leetcode-solutions-231-240">
-        </link>
-        <updated>2019-04-11T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<p>1</p>
 ]]></content>
     </entry>

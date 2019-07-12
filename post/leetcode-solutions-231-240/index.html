@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>LeetCode Solutions 231-240 | Pika</title>
-<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562934445078">
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562935716020">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
@@ -29,7 +29,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://pikameow.github.io/">
-  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562934445078" alt="">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562935716020" alt="">
   </a>
   <h1 class="site-title">
     Pika
@@ -101,7 +101,16 @@
             </div>
             
             <div class="post-content">
-              <p>1</p>
+              <h4 id="231-power-of-two">231. Power of Two</h4>
+<p><code>easy</code> <code>2019-07-04</code></p>
+<p>只需要判断二进制形式是否满足<code>10..0</code>的模式，0要单独处理。</p>
+<pre><code class="language-cpp">if (!n) return false;
+while (n) {
+    if ((n &amp; 1) &amp;&amp; (n ^ 1)) return false; // 如果n的末尾为1且n!=1,那么说明不满足要求
+    n &gt;&gt;= 1;
+}
+return true;
+</code></pre>
 
             </div>
           </article>
