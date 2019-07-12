@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>LeetCode Solutions 1-10 | Pika</title>
-<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562914717068">
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562914856042">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
@@ -20,7 +20,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://pikameow.github.io/">
-  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562914717068" alt="">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562914856042" alt="">
   </a>
   <h1 class="site-title">
     Pika
@@ -107,7 +107,6 @@ sort(a.begin(), a.end());
 <p>在有序数组 vector&lt;int&gt; a 中寻找等于数字 t 的元素的位置</p>
 <pre><code class="language-cpp">auto pos = equal_range(a.begin(), a.end(), t); // pos为pair类型，pos.first指向第一个不小于t的元素，pos.second指向第一个大于t的元素
 int dis  = pos.second - pos.first;             // dis==0 找不到与t相等的元素；dis==1 恰有1个与t相等的元素；dis&gt;1 有超过1个与t相等的元素                                              // 排序原数组a
-
 </code></pre>
 </li>
 </ol>

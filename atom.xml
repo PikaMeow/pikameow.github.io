@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://pikameow.github.io/</id>
     <title>Pika</title>
-    <updated>2019-07-12T06:59:55.794Z</updated>
+    <updated>2019-07-12T07:00:59.197Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://pikameow.github.io/"/>
     <link rel="self" href="https://pikameow.github.io//atom.xml"/>
@@ -31,7 +31,6 @@ sort(a.begin(), a.end());
 <p>在有序数组 vector&lt;int&gt; a 中寻找等于数字 t 的元素的位置</p>
 <pre><code class="language-cpp">auto pos = equal_range(a.begin(), a.end(), t); // pos为pair类型，pos.first指向第一个不小于t的元素，pos.second指向第一个大于t的元素
 int dis  = pos.second - pos.first;             // dis==0 找不到与t相等的元素；dis==1 恰有1个与t相等的元素；dis&gt;1 有超过1个与t相等的元素                                              // 排序原数组a
-
 </code></pre>
 </li>
 </ol>
