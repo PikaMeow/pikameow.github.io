@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>LeetCode Solutions 201-210 | Pika</title>
-<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562932343918">
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562934445078">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
@@ -29,7 +29,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://pikameow.github.io/">
-  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562932343918" alt="">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562934445078" alt="">
   </a>
   <h1 class="site-title">
     Pika
@@ -101,7 +101,39 @@
             </div>
             
             <div class="post-content">
-              <p>1</p>
+              <h4 id="202-happy-number">202. Happy Number</h4>
+<p><code>easy</code> <code>2019-07-09</code></p>
+<p>参考<a href="https://en.wikipedia.org/wiki/Happy_number">Wiki</a>。对于m(m&gt;3)位的数，在进行一次平方加和后，所得到的数最大为 81m；即所有超过1000的数，在若干次平方加和后都会小于1000。而小于1000的最大数为999，接下来发现所有3位数都会变成至多2位数。而对于任意小于100的数，经过逐个计算，要么它收敛到1，要么进入<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>4</mn><mo>→</mo><mo>⋯</mo><mo>→</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">4\rightarrow \cdots \rightarrow 4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="minner">⋯</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span></span></span></span>的循环，因此可以通过这个条件进行判断。</p>
+<pre><code class="language-cpp">while (n != 1 &amp;&amp; n != 4) {
+    int res = 0;
+    while (n) { res += (n % 10) * (n % 10); n /= 10; }
+    n = res;
+}
+return n == 1 ? true : false;
+</code></pre>
+<p>当然，如果不使用这个性质，还可以使用一个Hash表保存访问过的数，如果出现了循环，且并不为1，那么就返回false。</p>
+<hr>
+<h4 id="203-remove-linked-list-elements">203. Remove Linked List Elements</h4>
+<p><code>easy</code> <code>2019-07-03</code></p>
+<p>对于该题而言，链表中的元素分三类：开头，中间，结尾。其中开头元素要单独处理，用以移动<code>head</code>的位置，另两类可以一并处理，但要注意边界情况。</p>
+<pre><code class="language-cpp">while(head &amp;&amp; head-&gt;val==val) head=head-&gt;next;
+ListNode *p=head;
+while(p &amp;&amp; p-&gt;next) {
+    if(p-&gt;next-&gt;val==val) p-&gt;next=p-&gt;next-&gt;next;
+    else p=p-&gt;next;
+}
+return head;
+</code></pre>
+<hr>
+<h4 id="206-reverse-linked-list">206. Reverse Linked List</h4>
+<p><code>easy</code> <code>2019-07-04</code></p>
+<p>非递归的方式在检测链表是否有环的第#141题中已经实现，这里使用递归的方法，效果相同，写起来更简洁。</p>
+<pre><code class="language-cpp">ListNode *reverseList(ListNode *p, ListNode *q) { // 初始调用时，p=head, q=NULL
+    if (!p)  return q;
+    ListNode *k = p-&gt;next;  p-&gt;next = q;
+    return reverseList(k, p);
+}
+</code></pre>
 
             </div>
           </article>

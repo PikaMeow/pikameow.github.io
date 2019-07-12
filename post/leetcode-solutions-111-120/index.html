@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>LeetCode Solutions 111-120 | Pika</title>
-<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562932343918">
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562934445078">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
@@ -29,7 +29,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://pikameow.github.io/">
-  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562932343918" alt="">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562934445078" alt="">
   </a>
   <h1 class="site-title">
     Pika
@@ -101,7 +101,43 @@
             </div>
             
             <div class="post-content">
-              <p>1</p>
+              <h4 id="111-minimum-depth-of-binary-tree">111. Minimum Depth of Binary Tree</h4>
+<p><code>easy</code> <code>2019-07-01</code></p>
+<p>与计算最大深度很类似，只需将<code>max</code>变为<code>min</code>。但需注意一点，如果左右子树一个为空，一个非空，那么最小高度是不计算空子树的，只计算非空的一侧子树。</p>
+<pre><code class="language-cpp">if (!root) return 0;
+int lh = minDepth(root-&gt;left), rh = minDepth(root-&gt;right);
+// 方法一：分别判断一侧子树为空的情况
+if ((!lh &amp;&amp; rh)) return rh + 1;
+else if ((lh &amp;&amp; !rh)) return lh + 1;
+else return min(lh, rh) + 1;
+// 方法二：更简洁！
+return 1 + (min(lh, rh) ? min(lh, rh) : max(lh, rh));
+</code></pre>
+<hr>
+<h4 id="112-path-sum">112. Path Sum</h4>
+<p><code>easy</code> <code>2019-07-01</code></p>
+<p>DFS即可。相比于每次递归都记录一个值，然后到叶子节点时与target sum比较，示例解法使用了递归减的方式，最后结果直接与0相比，避免了使用一个参数保存中间结果，更加简洁。</p>
+<pre><code class="language-cpp">if(root == NULL)  return false;
+int newsum = sum - root-&gt;val;
+if(root-&gt;left == NULL &amp;&amp; root-&gt;right == NULL)  return newsum == 0;
+return hasPathSum(root-&gt;left, newsum) || hasPathSum(root-&gt;right, newsum);
+</code></pre>
+<hr>
+<h4 id="118-pascals-triangle">118. Pascal's Triangle</h4>
+<p><code>easy</code> <code>2019-07-01</code></p>
+<p>首先注意数字的存放次序。可以选择直接建立二维数组，然后使用DP的方法向里面填充数据；同时，考虑到每一行都是由上一行直接决定的，因此也可以使用一个一维数组来做运算，之后复制到二维数组中。</p>
+<pre><code class="language-cpp">for (int k = 0; k &lt; numRows; k++) {
+    row.push_back(1);
+    for (int i = k - 1; i &gt; 0; i--) {
+        row[i] = row[i] + row[i - 1];
+    }
+    tri.push_back(row);
+}
+</code></pre>
+<hr>
+<h4 id="119-pascals-triangle-ii">119. Pascal's Triangle II</h4>
+<p><code>easy</code> <code>2019-07-02</code></p>
+<p>与上一题类似，如果上题采用了一维数组的运算方式，那么可以直接用于这一题。</p>
 
             </div>
           </article>

@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>LeetCode Solutions 141-150 | Pika</title>
-<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562932343918">
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562934445078">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
@@ -29,7 +29,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://pikameow.github.io/">
-  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562932343918" alt="">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562934445078" alt="">
   </a>
   <h1 class="site-title">
     Pika
@@ -101,7 +101,43 @@
             </div>
             
             <div class="post-content">
-              <p>1</p>
+              <h4 id="141-linked-list-cycle">141. Linked List Cycle</h4>
+<p><code>easy</code> <code>2019-07-02</code></p>
+<p>方法一：两个指针追赶法</p>
+<p>使用2个指针<code>p</code>和<code>q</code>指向链表头，然后<code>p</code>每次前进2步，<code>q</code>每次前进1步，如果<code>p</code>到达链表尾，那么说明没有环；每次前进后判断<code>(p==q || p==q.next)</code>，如果为真，表示<code>p</code>通过环追赶上了<code>q</code>，说明有环。</p>
+<p>时间效率分析：假设长度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span>的链表有环，其中无环部分长度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span></span></span>，有环部分为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span></span></span></span>。对指针<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span></span></span></span>来说，到进入环的时刻，耗时为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(a)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">a</span><span class="mclose">)</span></span></span></span>，此时<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">p</span></span></span></span>已经在环中。然后变成指针的追赶问题，两者的最大距离为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span></span></span></span>，而速度差为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>，因此<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">p</span></span></span></span>追上<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span></span></span></span>耗时最多为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>b</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(b)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">b</span><span class="mclose">)</span></span></span></span>，加起来为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>。</p>
+<pre><code class="language-cpp">ListNode *p = head-&gt;next, *q = head;
+while (p) {
+    p = p-&gt;next;  q = q-&gt;next;
+    if (!p || !(p-&gt;next))  break;
+    p = p-&gt;next;
+    if (p == q || p == q-&gt;next)  return true; // 仅用 p==q 也可，但可能会更慢
+}
+return false;
+</code></pre>
+<p>方法二：倒转链表法</p>
+<p>首先将链表倒转过来，如果链表中有环，那么倒转之后的<code>rhead</code>指针与原来的<code>head</code>指针相同。需要注意的是，判断是要保证链表元素大于1(含循环)。</p>
+<pre><code class="language-cpp">ListNode *reverse(ListNode *head) {
+    ListNode *p = NULL, *q = NULL; // prev and follow pointer
+    while (head) {
+        q          = head-&gt;next; // 找到下一个元素
+        head-&gt;next = p; // 将当前head的next反向
+        p          = head; // 将当前head置为prev
+        head       = q; // 移动至下一个元素
+    }
+    return p;
+}
+</code></pre>
+<p>方法三：哈希映射法</p>
+<p>使用数据结构<code>unordered_map</code>，即用哈希表来保存链表的每个指针。然后遍历列表，如果发现键已经存在表中，说明链表有环。</p>
+<pre><code class="language-cpp">unordered_map&lt;ListNode *, int&gt; table; // 键有用，值无用，可以随意设置
+while (head) {
+    table.insert(make_pair(head, head-&gt;val));
+    head = head-&gt;next;
+    if (table.find(head) != table.end())  return true;
+}
+return false;
+</code></pre>
 
             </div>
           </article>

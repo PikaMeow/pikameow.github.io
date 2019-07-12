@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>LeetCode Solutions 191-200 | Pika</title>
-<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562932343918">
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562934445078">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
@@ -29,7 +29,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://pikameow.github.io/">
-  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562932343918" alt="">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562934445078" alt="">
   </a>
   <h1 class="site-title">
     Pika
@@ -101,7 +101,45 @@
             </div>
             
             <div class="post-content">
-              <p>1</p>
+              <h4 id="191-number-of-1-bits">191. Number of 1 Bits</h4>
+<p><code>easy</code> <code>2019-07-05</code></p>
+<p>一个讲解很棒的链接：<a href="http://blog.chinaunix.net/uid-20729605-id-1884367.html">上</a>, <a href="http://blog.chinaunix.net/uid-20729605-id-1884368.html">下</a></p>
+<p>首先排除一个一个数的思路。可以使用和上一题类似的递归的思想，先计算相邻2位的1的数目(即加和)，再计算相邻4位的1的数目，直到计算完所有32位。这种方法叫做 Shift and Add.</p>
+<pre><code class="language-cpp">n = (n &amp; 0x55555555) + ((n &gt;&gt; 1) &amp; 0x55555555);
+n = (n &amp; 0x33333333) + ((n &gt;&gt; 2) &amp; 0x33333333);
+n = (n &amp; 0x0f0f0f0f) + ((n &gt;&gt; 4) &amp; 0x0f0f0f0f);
+n = (n &amp; 0x00ff00ff) + ((n &gt;&gt; 8) &amp; 0x00ff00ff);
+n = (n &amp; 0x0000ffff) + ((n &gt;&gt; 16) &amp; 0x0000ffff);
+return n;
+</code></pre>
+<p>通过分析可以发现，这种方法其中的一些运算是多余的，我们可以做一些优化。我们的发现是<strong>2个k位的最大和(2k)是否超过了k位二进制数表示的范围</strong>。对于前2步都是为否，所以要正常地通过掩码先与后加。[ 还发现对于2个1位的加和a+b=(2*a+b)-a=(ab)-a ]，所以第1步可以使用减法运算省掉一次与运算。</p>
+<p>对于第3步，2个4位数的和最大为8，可以用4位二进制表示，因此可以先加，但是由于2个8位数的和最大为16，超出了4位二进制的范围，所以仍然要和掩码进行与运算，否则可能影响后面的计算。</p>
+<p>对于第4,5步，即不会出现和超出范围，也不会出现“污染”后面计算的情况，所以不需要再进行与运算。</p>
+<p>最后，由于1的个数最多为32，可以用6位二进制表示，所以最后只取计算的最后6位结果即可。</p>
+<pre><code class="language-cpp">n -= ((n &gt;&gt; 1) &amp; 0x55555555);
+n = (n &amp; 0x33333333) + ((n &gt;&gt; 2) &amp; 0x33333333);
+n = (n + (n &gt;&gt; 4)) &amp; 0x0f0f0f0f;
+n += (n &gt;&gt; 8);
+n += (n &gt;&gt; 16);
+return n &amp; 0x3f;
+</code></pre>
+<p>另外我们还有一个观察，在第3步执行完后，数字被分成了4个长度为8的块，如果可以使用乘法运算，那么可以一步计算完成(列竖式计算很容易发现)，然后再将后面的24位去掉，只取前8位就是我们需要的结果。即最后3行可以改为：</p>
+<pre><code class="language-cpp">return (n * 0x01010101) &gt;&gt; 24;
+</code></pre>
+<p>除了这种方法之外，还有一种运算更少的方法。算法以汇编的形式写在了备忘录HEKMEM的第169个算法，因此又称HEKMEM169。</p>
+<p>算法首先使用了3个1位相加的策略。对于相邻的3个数(abc)，它表示的数字大小为4a+2b+c，因此先右移1位并和掩码与运算后得到(ab),即2a+b，再右移2位得到(a)，用原数相减得 a+b+c。</p>
+<p>然后使用2个3位相加的策略，得到每6位自成一组，对于任意一个相邻的6位，假设是(ab)，那么它表示的数字大小为64a+b，而它与a+b模63同余。所以对于整个数，都可以看做是递归使用了若干个(ab)，由于1的个数的范围是[0,32]，那么它一定为 n%63。</p>
+<pre><code class="language-cpp">n -= ((n &gt;&gt; 1) &amp; 033333333333) + ((n &gt;&gt; 2) &amp; 011111111111); // 0开头表示八进制
+n = (n + (n &gt;&gt; 3)) &amp; 030707070707;
+return n % 63;
+</code></pre>
+<ul>
+<li>注：既然关于模63同余是可行的，那么使用之前的方法，也可以出现模15和模255同余的情况，是否也可行呢？依然是考虑到1的个数在[0,32]之间，模16肯定不可行，而模255是可行的，也就是将算法最后3行改为<code>return n % 255;</code>即可。</li>
+</ul>
+<hr>
+<h4 id="198-house-robber">198. House Robber</h4>
+<p><code>easy</code> <code>2019-07-03</code></p>
+<p>DP问题。设<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">a[i]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">a</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span>为抢前<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">i</span></span></span></span>家之后的最大收益，那么有2种情况：抢了第<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">i-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.74285em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>家，那么不能抢第<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">i</span></span></span></span>家；没有抢第<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">i-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.74285em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>家，那么能抢第<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">i</span></span></span></span>家，所以<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo><mo>=</mo><mi>max</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">[</mo><mi>i</mi><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo><mo separator="true">,</mo><mi>a</mi><mo stretchy="false">[</mo><mi>i</mi><mo>−</mo><mn>2</mn><mo stretchy="false">]</mo><mo>+</mo><mi>r</mi><mi>o</mi><mi>b</mi><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">a[i]=\max(a[i-1],a[i-2]+rob[i])</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">a</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord mathdefault">a</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">a</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">o</span><span class="mord mathdefault">b</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mclose">)</span></span></span></span>。</p>
 
             </div>
           </article>
