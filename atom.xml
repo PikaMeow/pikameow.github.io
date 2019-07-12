@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://pikameow.github.io/</id>
     <title>Pika</title>
-    <updated>2019-07-12T08:19:46.485Z</updated>
+    <updated>2019-07-12T11:36:34.897Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://pikameow.github.io/"/>
     <link rel="self" href="https://pikameow.github.io//atom.xml"/>
@@ -10,6 +10,174 @@
     <logo>https://pikameow.github.io//images/avatar.png</logo>
     <icon>https://pikameow.github.io//favicon.ico</icon>
     <rights>All rights reserved 2019, Pika</rights>
+    <entry>
+        <title type="html"><![CDATA[LeetCode Solutions 81-90]]></title>
+        <id>https://pikameow.github.io//post/leetcode-solutions-81-90</id>
+        <link href="https://pikameow.github.io//post/leetcode-solutions-81-90">
+        </link>
+        <updated>2018-11-12T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>1</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LeetCode Solutions 71-80]]></title>
+        <id>https://pikameow.github.io//post/leetcode-solutions-71-80</id>
+        <link href="https://pikameow.github.io//post/leetcode-solutions-71-80">
+        </link>
+        <updated>2018-11-02T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>1</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LeetCode Solutions 61-70]]></title>
+        <id>https://pikameow.github.io//post/leetcode-solutions-61-70</id>
+        <link href="https://pikameow.github.io//post/leetcode-solutions-61-70">
+        </link>
+        <updated>2018-10-23T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>1</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LeetCode Solutions 51-60]]></title>
+        <id>https://pikameow.github.io//post/leetcode-solutions-51-60</id>
+        <link href="https://pikameow.github.io//post/leetcode-solutions-51-60">
+        </link>
+        <updated>2018-10-13T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>1</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LeetCode Solutions 41-50]]></title>
+        <id>https://pikameow.github.io//post/leetcode-solutions-41-50</id>
+        <link href="https://pikameow.github.io//post/leetcode-solutions-41-50">
+        </link>
+        <updated>2018-10-03T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>1</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LeetCode Solutions 31-40]]></title>
+        <id>https://pikameow.github.io//post/leetcode-solutions-31-40</id>
+        <link href="https://pikameow.github.io//post/leetcode-solutions-31-40">
+        </link>
+        <updated>2018-09-23T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="35-search-insert-position">35. Search Insert Position</h4>
+<p><code>easy</code> <code>2019-03-20</code></p>
+<p>基本的二分查找。查找的是数组中“小于等于”<code>target</code>的最大的元素的下标。</p>
+<pre><code class="language-cpp">int mid, beg = 0, end = nums.size(); // end指向数组后的位置
+while (beg &lt; end) {
+    mid = (beg + end) &gt;&gt; 1;
+    if (nums[mid] == target) return mid; // 一旦匹配就返回，可以提高一点效率，去掉也是可以的
+    else if (nums[mid] &lt; target) beg = mid + 1;
+    else end = mid;
+}
+return beg;
+</code></pre>
+<p>当然也可以直接用<code>lower_bound</code>函数直接获取结果：</p>
+<pre><code class="language-cpp">auto low = lower_bound(nums.begin(), nums.end(), target); // 返回指向“不小于”target的元素的迭代器
+return low - nums.begin();
+</code></pre>
+<hr>
+<h4 id="38-count-and-say">38. Count and Say</h4>
+<p><code>easy</code> <code>2019-03-20</code></p>
+<p>对于一个数，从高位向低位，连续有<code>m</code>个<code>a</code>，那么下一个数有2位就是<code>ma</code>，以此类推。</p>
+<p>由于第<code>i</code>个数地生成仅依赖于第<code>i-1</code>个数，因此可以用递归的方式，先生成第<code>i-1</code>个数，然后再处理生成第<code>i</code> 个数。</p>
+<pre><code class="language-cpp">if (n == 1) return &quot;1&quot;;
+string s = countAndSay(n - 1), res = &quot;&quot;;
+for (int i = 0; i &lt; s.size(); i++) {
+    int count = 1;
+    while (i &lt; s.size() - 1 &amp;&amp; s[i] == s[i + 1])
+        i++, count++;                    // 计算共有 count 个 s[i] 相邻
+    res.append(to_string(count) + s[i]); // 将 count 和 s[i] 添加到下一个数中
+}
+return res;
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LeetCode Solutions 21-30]]></title>
+        <id>https://pikameow.github.io//post/leetcode-solutions-21-30</id>
+        <link href="https://pikameow.github.io//post/leetcode-solutions-21-30">
+        </link>
+        <updated>2018-09-13T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="21-merge-two-sorted-lists">21. Merge Two Sorted Lists</h4>
+<p><code>easy</code> <code>2019-03-10</code></p>
+<p>直接在原来2个链表上进行操作，根据merge的顺序更改原链表的指针。注意修改指针的顺序。可以通过new一个dummy节点来作为新链表的头。</p>
+<pre><code class="language-cpp">ListNode *dummy = new ListNode(0), *p = dummy; // 定义头指针和工作指针
+while (l1 &amp;&amp; l2) {
+    if (l1-&gt;val &lt;= l2-&gt;val) { p-&gt;next = l1; l1 = l1-&gt;next; } 
+    else { p-&gt;next = l2; l2 = l2-&gt;next;}
+    p = p-&gt;next;
+}
+if (l1) p-&gt;next = l1;
+if (l2) p-&gt;next = l2;
+return dummy-&gt;next;
+</code></pre>
+<hr>
+<h4 id="26-remove-duplicates-from-sorted-array">26. Remove Duplicates From Sorted Array</h4>
+<p><code>easy</code> <code>2019-03-10</code></p>
+<p>基本思想是处理后的数组各元素的下标一定小于等于原数组各元素的下标。因此可以从左至右逐个比对，然后将新元素直接覆盖原有位置的元素。</p>
+<p>除了手动实现之外，还可以使用<code>unique</code>函数，将容器的[first,last)之间的元素唯一化，并且返回指向新的末尾元素的迭代器，复杂度与原数组的大小呈线性。</p>
+<pre><code class="language-cpp">auto i = unique(nums.begin(), nums.end()); // 处理后的末尾位置
+auto j = nums.begin();                     // 处理前(后)的起始位置
+return i - j;
+</code></pre>
+<hr>
+<h4 id="27-remove-element">27. Remove Element</h4>
+<p><code>easy</code> <code>2019-03-10</code></p>
+<p>与上一题类似，使用双指针的方法，从左至右遍历，在找到与<code>val</code>相同的元素时，记录它的位置，然后用之后的与<code>val</code>不同的元素直接覆盖它。</p>
+<hr>
+<h4 id="28-implement-strstr">28. Implement strStr()</h4>
+<p><code>easy</code> <code>2019-03-10</code></p>
+<p>判断字符串<code>needle</code>是否为字符串<code>haystack</code>的子串。</p>
+<p>如果是，返回第一次出现的索引；如果不是，返回-1；如果<code>needle</code>为空，返回0。</p>
+<h5 id="方法一kmp算法-onm">方法一：KMP算法 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>m</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mclose">)</span></span></span></span></h5>
+<pre><code class="language-cpp">void kmp_init(string &amp;needle, vector&lt;int&gt; &amp;next) { // 初始化 next 数组
+    next[0] = 0;
+    int k   = 0;
+    for (int q = 1; q &lt; needle.length(); q++) {
+        while (k &amp;&amp; needle[k] != needle[q]) k = next[k - 1];
+        if (needle[k] == needle[q]) k++;
+        next[q] = k;
+    }
+    return next;
+}
+int kmp(string &amp;haystack, string &amp;needle) { // 进行字符串匹配
+    if (needle.empty()) return 0;
+    vector&lt;int&gt; next(needle.length(), 0);
+    kmp_init(needle, next);
+    int k = 0;
+    for (int q = 0; q &lt; haystack.length(); q++) {
+        while (k &amp;&amp; needle[k] != haystack[q]) k = next[k - 1];
+        if (needle[k] == haystack[q]) k++;
+        if (k == needle.length()) return q - k + 1; // 返回第1次出现位置的索引
+    }
+    return -1;
+}
+</code></pre>
+<h5 id="方法二字符串hash-onm">方法二：字符串Hash <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>m</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mclose">)</span></span></span></span></h5>
+<p>将字符串<code>needle</code>中的字符映射到<code>map</code>中，然后遍历字符串<code>haystack</code>找到与<code>needle</code>中各字符都能匹配得上的相同数量的字符，作为候选串，然后再逐个字符比较，如果顺序也对得上，那么就返回相应索引。</p>
+<p>（就本题而言，该方法与 Brute-Force 方法效率差别不大）</p>
+<pre><code class="language-cpp">if (needle.empty()) return 0;
+unordered_map&lt;char, int&gt; m;
+for (auto c : needle) m[c]++;                // 字符串映射
+int count = needle.size(), beg = 0, end = 0; // 双指针，保存候选串的起始和末尾位置
+while (end &lt; haystack.length()) {
+    if (m[haystack[end++]]-- &gt; 0) count--; // count用来判断当前已经匹配上了多少字符
+    if (end - beg == needle.length()) {
+        if (count == 0) { // 如果恰好找到了一个候选，那么逐字符比较
+            int i = beg, j = 0;
+            while (j &lt; needle.length() &amp;&amp; haystack[i] == needle[j]) i++, j++;
+            if (j == needle.length()) return beg;
+        }
+        if (m[haystack[beg++]]++ &gt;= 0)
+            count++; // 如果发现顺序不对，那么后移一位继续判断，恢复相应字符在映射m中的值
+    }
+}
+return -1;
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[LeetCode Solutions 11-20]]></title>
         <id>https://pikameow.github.io//post/leetcode-solutions-11-20</id>
@@ -20,13 +188,11 @@
 <p><code>easy</code> <code>2019-02-10</code></p>
 <p>除了通过许多if和else语句逐个判断的naive方法外，考虑到输入的罗马数字“一定合法”，因此对于相邻的两个字符，根据前者和后者的大小关系，选择增或减前者的大小即可。</p>
 <p>再使用<strong>unordered_map</strong>容器存储字符与数字的映射关系，通过Hash桶的存储方式，可以在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>时间内完成插入、删除和查找操作。</p>
-<pre><code class="language-cpp">if(s.empty()) return 0;
-unordered_map&lt;char, int&gt; m={{'I',1}, {'V',5}, {'X',10}, {'L',50},
-                            {'C',100}, {'D',500}, {'M',1000}};
-int num=m[s.back()];
-for(int i=s.size()-2;i&gt;=0;i--) {
-    num += (m[s[i]]&gt;=m[s[i+1]]?m[s[i]]:-m[s[i]]); // 如果前者小于后者，那么减去前者
-}
+<pre><code class="language-cpp">if (s.empty()) return 0;
+unordered_map&lt;char, int&gt; m = {{'I', 1}, {'V', 5}, {'X', 10}, {'L', 50}, {'C', 100}, {'D', 500}, {'M', 1000}};
+int num = m[s.back()];
+for (int i = s.size() - 2; i &gt;= 0; i--) 
+    num += (m[s[i]] &gt;= m[s[i + 1]] ? m[s[i]] : -m[s[i]]); // 如果前者小于后者，那么减去前者
 return num;
 </code></pre>
 <hr>
@@ -38,14 +204,12 @@ return num;
 <li>对 string 进行截断可以用函数 <code>resize(len)</code>，表示将原字符串截断至长度<code>len</code></li>
 <li>记得处理边界情况：字符串数组为空</li>
 </ol>
-<pre><code class="language-cpp">if(strs.empty()) return &quot;&quot;;
+<pre><code class="language-cpp">if (strs.empty()) return &quot;&quot;;
 string prefix;
-for(size_t c_idx=0;c_idx&lt;strs[0].size();prefix+=strs[0][c_idx++]) {
-    for(size_t str_idx=1;str_idx&lt;strs.size();str_idx++) {
-        if(c_idx&gt;=strs[str_idx].size() || strs[str_idx][c_idx]!=strs[0][c_idx]) 
+for (size_t c_idx = 0; c_idx &lt; strs[0].size(); prefix += strs[0][c_idx++])
+    for (size_t str_idx = 1; str_idx &lt; strs.size(); str_idx++)
+        if (c_idx &gt;= strs[str_idx].size() || strs[str_idx][c_idx] != strs[0][c_idx])
             return prefix;
-    }
-}
 return prefix;
 </code></pre>
 <hr>

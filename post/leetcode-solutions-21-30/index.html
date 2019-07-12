@@ -1,0 +1,217 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LeetCode Solutions 21-30 | Pika</title>
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1562931374518">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-73050124-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-73050124-2');
+</script>
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://pikameow.github.io/">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1562931374518" alt="">
+  </a>
+  <h1 class="site-title">
+    Pika
+  </h1>
+  <p class="site-description">
+    May you shine up with the stars
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/PikaMeow" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              LeetCode Solutions 21-30
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2018-09-14 ·
+              </time>
+              
+                <a href="https://pikameow.github.io//tag/kmp" class="post-tag">
+                  # KMP
+                </a>
+              
+                <a href="https://pikameow.github.io//tag/leetcode" class="post-tag">
+                  # LeetCode
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://pikameow.github.io//post-images/leetcode-solutions-21-30.png')">
+              </div>
+            
+            <div class="post-content">
+              <h4 id="21-merge-two-sorted-lists">21. Merge Two Sorted Lists</h4>
+<p><code>easy</code> <code>2019-03-10</code></p>
+<p>直接在原来2个链表上进行操作，根据merge的顺序更改原链表的指针。注意修改指针的顺序。可以通过new一个dummy节点来作为新链表的头。</p>
+<pre><code class="language-cpp">ListNode *dummy = new ListNode(0), *p = dummy; // 定义头指针和工作指针
+while (l1 &amp;&amp; l2) {
+    if (l1-&gt;val &lt;= l2-&gt;val) { p-&gt;next = l1; l1 = l1-&gt;next; } 
+    else { p-&gt;next = l2; l2 = l2-&gt;next;}
+    p = p-&gt;next;
+}
+if (l1) p-&gt;next = l1;
+if (l2) p-&gt;next = l2;
+return dummy-&gt;next;
+</code></pre>
+<hr>
+<h4 id="26-remove-duplicates-from-sorted-array">26. Remove Duplicates From Sorted Array</h4>
+<p><code>easy</code> <code>2019-03-10</code></p>
+<p>基本思想是处理后的数组各元素的下标一定小于等于原数组各元素的下标。因此可以从左至右逐个比对，然后将新元素直接覆盖原有位置的元素。</p>
+<p>除了手动实现之外，还可以使用<code>unique</code>函数，将容器的[first,last)之间的元素唯一化，并且返回指向新的末尾元素的迭代器，复杂度与原数组的大小呈线性。</p>
+<pre><code class="language-cpp">auto i = unique(nums.begin(), nums.end()); // 处理后的末尾位置
+auto j = nums.begin();                     // 处理前(后)的起始位置
+return i - j;
+</code></pre>
+<hr>
+<h4 id="27-remove-element">27. Remove Element</h4>
+<p><code>easy</code> <code>2019-03-10</code></p>
+<p>与上一题类似，使用双指针的方法，从左至右遍历，在找到与<code>val</code>相同的元素时，记录它的位置，然后用之后的与<code>val</code>不同的元素直接覆盖它。</p>
+<hr>
+<h4 id="28-implement-strstr">28. Implement strStr()</h4>
+<p><code>easy</code> <code>2019-03-10</code></p>
+<p>判断字符串<code>needle</code>是否为字符串<code>haystack</code>的子串。</p>
+<p>如果是，返回第一次出现的索引；如果不是，返回-1；如果<code>needle</code>为空，返回0。</p>
+<h5 id="方法一kmp算法-onm">方法一：KMP算法 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>m</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mclose">)</span></span></span></span></h5>
+<pre><code class="language-cpp">void kmp_init(string &amp;needle, vector&lt;int&gt; &amp;next) { // 初始化 next 数组
+    next[0] = 0;
+    int k   = 0;
+    for (int q = 1; q &lt; needle.length(); q++) {
+        while (k &amp;&amp; needle[k] != needle[q]) k = next[k - 1];
+        if (needle[k] == needle[q]) k++;
+        next[q] = k;
+    }
+    return next;
+}
+int kmp(string &amp;haystack, string &amp;needle) { // 进行字符串匹配
+    if (needle.empty()) return 0;
+    vector&lt;int&gt; next(needle.length(), 0);
+    kmp_init(needle, next);
+    int k = 0;
+    for (int q = 0; q &lt; haystack.length(); q++) {
+        while (k &amp;&amp; needle[k] != haystack[q]) k = next[k - 1];
+        if (needle[k] == haystack[q]) k++;
+        if (k == needle.length()) return q - k + 1; // 返回第1次出现位置的索引
+    }
+    return -1;
+}
+</code></pre>
+<h5 id="方法二字符串hash-onm">方法二：字符串Hash <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>m</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mclose">)</span></span></span></span></h5>
+<p>将字符串<code>needle</code>中的字符映射到<code>map</code>中，然后遍历字符串<code>haystack</code>找到与<code>needle</code>中各字符都能匹配得上的相同数量的字符，作为候选串，然后再逐个字符比较，如果顺序也对得上，那么就返回相应索引。</p>
+<p>（就本题而言，该方法与 Brute-Force 方法效率差别不大）</p>
+<pre><code class="language-cpp">if (needle.empty()) return 0;
+unordered_map&lt;char, int&gt; m;
+for (auto c : needle) m[c]++;                // 字符串映射
+int count = needle.size(), beg = 0, end = 0; // 双指针，保存候选串的起始和末尾位置
+while (end &lt; haystack.length()) {
+    if (m[haystack[end++]]-- &gt; 0) count--; // count用来判断当前已经匹配上了多少字符
+    if (end - beg == needle.length()) {
+        if (count == 0) { // 如果恰好找到了一个候选，那么逐字符比较
+            int i = beg, j = 0;
+            while (j &lt; needle.length() &amp;&amp; haystack[i] == needle[j]) i++, j++;
+            if (j == needle.length()) return beg;
+        }
+        if (m[haystack[beg++]]++ &gt;= 0)
+            count++; // 如果发现顺序不对，那么后移一位继续判断，恢复相应字符在映射m中的值
+    }
+}
+return -1;
+</code></pre>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://pikameow.github.io//post/leetcode-solutions-11-20">
+              <h3 class="post-title">
+                LeetCode Solutions 11-20
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">PikaMeow</a> | 
+  <a class="rss" href="https://pikameow.github.io//atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
