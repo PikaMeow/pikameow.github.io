@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://pikameow.github.io/</id>
     <title>Pika</title>
-    <updated>2019-07-17T15:22:36.974Z</updated>
+    <updated>2019-07-19T02:31:54.976Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://pikameow.github.io/"/>
     <link rel="self" href="https://pikameow.github.io//atom.xml"/>
@@ -291,12 +291,42 @@ return -1;
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[LeetCode Solutions 11-20]]></title>
+        <title type="html"><![CDATA[LeetCode Solutions 11-20 [done]]]></title>
         <id>https://pikameow.github.io//post/leetcode-solutions-11-20</id>
         <link href="https://pikameow.github.io//post/leetcode-solutions-11-20">
         </link>
         <updated>2018-09-03T16:00:00.000Z</updated>
-        <content type="html"><![CDATA[<h4 id="13-roman-to-integer">13. Roman to Integer</h4>
+        <content type="html"><![CDATA[<h4 id="11-container-with-most-water">11. Container With Most Water</h4>
+<p><code>medium</code> <code>2019-07-18</code></p>
+<p>算法描述：2个指针<code>i</code>和<code>j</code>分别指向数组的首元素和尾元素。然后计算当前所围成的面积<code>S=(j-i)*min(a[i],a[j])</code>，然后将指向较小的元素的指针向<strong>内</strong>移动，并不断更新最大面积，直到2个指针相遇。</p>
+<p><a href="https://leetcode.com/problems/container-with-most-water/discuss/6089/Anyone-who-has-a-O(N)-algorithm/7268">证明</a>(反证法)：</p>
+<p>假设我们得到的面积不是最大的面积，那么一定存在2个元素<code>a[l]</code>和<code>a[r]</code>构成了最大的面积。由于算法中2个指针相遇才会停止，因此必定碰到了<code>a[l]</code>和<code>a[r]</code>中的一个而没有碰到另一个。不失一般性，我们假设当前左边指针指向了<code>a[l]</code>，那么知道如下2种情况它才会移动：</p>
+<ol>
+<li>2个指针撞到了一起，算法终止。那么由于另一个指针从右向左，一定会碰到<code>a[r]</code>，与假设矛盾。</li>
+<li>右边指针先指向了元素<code>a[r']&gt;a[l]</code>，从而使得左边指针右移，离开了<code>a[l]</code>，那么可以发现，<code>a[l]</code>与<code>a[r']</code>构成的面积一定大于<code>a[l]</code>与<code>a[r]</code>构成的面积(高度、宽度都更大)，与假设矛盾。</li>
+</ol>
+<p>因此我们的算法一定能够获得最大的面积。</p>
+<p>我们还可以从另一个角度考虑 <a href="https://leetcode.com/problems/container-with-most-water/discuss/6099/yet-another-way-to-see-what-happens-in-the-on-algorithm">链接</a>：</p>
+<p>指针先是指向首和尾，计算出了当前面积，假设<code>a[i]&lt;a[j]</code>，那么<code>a[i]</code>与<code>a[k],i&lt;k&lt;j</code>的面积都更小，不用再计算。然后右移指针<code>i</code>,计算当前面积，假设<code>a[i]&gt;a[j]</code>，那么<code>a[k],i&lt;k&lt;j</code>与<code>a[j]</code>的面积也更小，不用再计算。由于当<code>i=j</code>时算法结束，指针移动会移动<code>n-1</code>次，并且在所有的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mi>C</mi><mi>n</mi><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">C_n^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.061108em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-2.4530000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span>种组合中，我们一共省略了<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo><mo>+</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>+</mo><mo>⋯</mo><mo>+</mo><mn>0</mn><mo>=</mo><mfrac><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">(n-2)+(n-1)+\cdots+0=\frac{(n-2)(n-1)}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="minner">⋯</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.355em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathdefault mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">2</span><span class="mclose mtight">)</span><span class="mopen mtight">(</span><span class="mord mathdefault mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>次面积的计算，剩下了<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mi>C</mi><mi>n</mi><mn>2</mn></msubsup><mo>−</mo><mfrac><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></mfrac><mo>=</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">C_n^2-\frac{(n-2)(n-1)}{2}=n-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.061108em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-2.4530000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.355em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathdefault mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">2</span><span class="mclose mtight">)</span><span class="mopen mtight">(</span><span class="mord mathdefault mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>种可能，一定能在<code>n-1</code>次计算中考虑到，因此我们得到的是最优解，且复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>。</p>
+<hr>
+<h4 id="12-integer-to-roman">12. Integer to Roman</h4>
+<p><code>medium</code> <code>2019-07-18</code></p>
+<p>每一个十进制位可以分为<code>9, 5-8, 4, 0-3</code>这四种情况来考虑进行处理，并且要结合该位在数中的位置。</p>
+<pre><code class="language-cpp">unordered_map&lt;int, char&gt; m = {{1, 'I'}, {5, 'V'}, {10, 'X'}, {50, 'L'}, {100, 'C'}, {500, 'D'}, {1000, 'M'}};
+int base = 1; string ans = &quot;&quot;;
+while (num) {
+    int digit = num % 10; // 分情况处理还有可以合并的空间
+    if (digit == 9) ans = ans + m[base * 10] + m[base];
+    else if (digit &gt;= 5) { for (int i = 5; i &lt; digit; i++) { ans += m[base]; }  ans += m[base * 5]; }
+    else if (digit == 4) ans = ans + m[base * 5] + m[base];
+    else { for (int i = 0; i &lt; digit; i++) ans += m[base]; }
+    num /= 10; base *= 10;
+}
+reverse(ans.begin(), ans.end()); // 将字符串倒过来
+return ans;
+</code></pre>
+<hr>
+<h4 id="13-roman-to-integer">13. Roman to Integer</h4>
 <p><code>easy</code> <code>2019-02-10</code></p>
 <p>除了通过许多if和else语句逐个判断的naive方法外，考虑到输入的罗马数字“一定合法”，因此对于相邻的两个字符，根据前者和后者的大小关系，选择增或减前者的大小即可。</p>
 <p>再使用<strong>unordered_map</strong>容器存储字符与数字的映射关系，通过Hash桶的存储方式，可以在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>时间内完成插入、删除和查找操作。</p>
@@ -323,6 +353,72 @@ for (size_t c_idx = 0; c_idx &lt; strs[0].size(); prefix += strs[0][c_idx++])
         if (c_idx &gt;= strs[str_idx].size() || strs[str_idx][c_idx] != strs[0][c_idx])
             return prefix;
 return prefix;
+</code></pre>
+<hr>
+<h4 id="15-3sum">15. 3Sum</h4>
+<p><code>medium</code> <code>2019-07-18</code></p>
+<p>之前的2Sum平凡的解法是遍历所有的二元组，复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>；先对数组排序，然后遍历数组并使用二分搜索的方法，复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>lg</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n\lg n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">l<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>；使用哈希表将每个元素作为键，复杂度可以降到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>。</p>
+<p>而对于3Sum，如果遍历所有的三元组，复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>3</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^3)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>，显然是不尽人意的。我们希望能够找到复杂度更低的算法。</p>
+<p>我们仍然采用先将数组排好序，然后固定一个元素的方法，然后使用2个指针<code>i</code>和<code>j</code>分别指向剩下元素的首和尾，并且判断三个数的和，如果大于0，那么将<code>j</code>左移；如果小于<code>0</code>,就将<code>i</code>右移；如果等于0，就将这个组合存入结果中，直到<code>i=j</code>迭代结束。由于题目要求结果不能出现重复，因此我们移动<code>i</code>和<code>j</code>直到与目前元素不同。同样，对于固定元素，在一轮迭代之后，也要更换为不同的元素。</p>
+<p>使用这种方法，只需要2个循环，复杂度可以降到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>。</p>
+<pre><code class="language-cpp">vector&lt;vector&lt;int&gt;&gt; res;
+int len = nums.size();
+if (len &lt; 3) return res;
+sort(nums.begin(), nums.end());
+for (int i = 0; i &lt; len - 2;) {
+    int beg = i + 1, end = len - 1, pivot = nums[i];
+    while (beg &lt; end) { // 首尾指针
+        int sum = pivot + nums[beg] + nums[end];
+        if (sum &lt; 0) beg++;
+        else if (sum &gt; 0) end--;
+        else {
+            res.push_back({pivot, nums[beg], nums[end]});
+            int j = nums[beg], k = nums[end];
+            while ((++beg) &lt; len &amp;&amp; nums[beg] == j) ;
+            while ((--end) &gt; i &amp;&amp; nums[end] == k) ;
+        }
+    }
+    while ((++i) &lt; len - 2 &amp;&amp; pivot == nums[i]) ;
+}
+return res;
+</code></pre>
+<hr>
+<h4 id="16-3sum-closest">16. 3Sum Closest</h4>
+<p><code>medium</code> <code>2019-07-18</code></p>
+<p>与上一题类似，由于题目说明了只拥有唯一解，因此就不需要之前麻烦地移动至下一个不同的元素(当然也可以移动来提高效率)。在每次迭代的过程中保存当前sum与target最小的差异值，如果有更接近的sum，那么更新差异值并保存当前的sum。最后返回最接近的sum即可。复杂度也是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>。</p>
+<hr>
+<h4 id="17-letter-combinations-of-a-phone-number">17. Letter Combinations of a Phone Number</h4>
+<p><code>medium</code> <code>2019-07-19</code></p>
+<p>典型的字符串回溯，用DFS来解。注意处理空串的情况。附上代码：</p>
+<pre><code class="language-cpp">vector&lt;string&gt; letterCombinations(string digits) {
+    vector&lt;string&gt; letter({&quot;abc&quot;, &quot;def&quot;, &quot;ghi&quot;, &quot;jkl&quot;, &quot;mno&quot;, &quot;pqrs&quot;, &quot;tuv&quot;, &quot;wxyz&quot;});
+    vector&lt;string&gt; ans;
+    if (digits.size() == 0) return ans;
+    dfs(digits, 0, &quot;&quot;, letter, ans); // 按照当前的digit和所在位置进行DFS搜索
+    return ans;
+}
+void dfs(string &amp;digits, int i, string cur, vector&lt;string&gt; &amp;letter, vector&lt;string&gt; &amp;ans) {
+    if (i == digits.size()) { ans.push_back(cur); return; }
+    int idx = digits[i] - '2';
+    for (int j = 0; j &lt; letter[idx].size(); j++) { dfs(digits, i + 1, cur + letter[idx][j], letter, ans); }
+}
+</code></pre>
+<hr>
+<h4 id="18-4sum">18. 4Sum</h4>
+<p><code>medium</code> <code>2019-07-18</code></p>
+<p>与3Sum类似，只是外面的1层循环变成了2层循环，复杂度也变成了<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>3</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^3)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>。这种方法可以推广到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span></span></span></span>Sum的情况。</p>
+<hr>
+<h4 id="19-remove-nth-node-from-end-of-list">19. Remove Nth Node From End of List</h4>
+<p><code>medium</code> <code>2019-07-18</code></p>
+<p>快慢指针。快指针先于慢指针N步，当快指针到达链表尾时，删除慢指针所指向的元素。注意处理删除表头元素时，返回的表头会后移；以及从内存中释放被删除元素占用的空间。</p>
+<pre><code class="language-cpp">ListNode *p = head, *q = head, *r = head;
+while (n--) q = q-&gt;next;
+if (!q) return p-&gt;next; // 删除的是表头元素
+while (q-&gt;next) { p = p-&gt;next; q = q-&gt;next; }
+// ListNode *del = p-&gt;next;
+p-&gt;next = p-&gt;next-&gt;next;
+// delete del;
+return r;
 </code></pre>
 <hr>
 <h4 id="20-valid-parentheses">20. Valid Parentheses</h4>
