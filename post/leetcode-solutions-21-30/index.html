@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>LeetCode Solutions 21-30 | Pika</title>
-<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1563503513744">
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1563956483364">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
@@ -29,7 +29,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://pikameow.github.io/">
-  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1563503513744" alt="">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1563956483364" alt="">
   </a>
   <h1 class="site-title">
     Pika
@@ -119,6 +119,31 @@ if (l2) p-&gt;next = l2;
 return dummy-&gt;next;
 </code></pre>
 <hr>
+<h4 id="22-generate-parentheses">22. Generate Parentheses</h4>
+<p><code>medium</code> <code>2019-07-20</code></p>
+<p>与17题类似，字符串回溯，使用DFS即可。注意已生成的字符串中，任意前k个字符，左括号的数目都不小于右括号。</p>
+<pre><code class="language-cpp">vector&lt;string&gt; generateParenthesis(int n) {
+    vector&lt;string&gt; ans;
+    dfs(n, n, &quot;&quot;, ans);
+    return ans;
+}
+void dfs(int left, int right, string cur, vector&lt;string&gt; &amp;ans) {
+    if (right == 0) { ans.push_back(cur); return; }
+    if (left &lt; right) dfs(left, right - 1, cur + ')', ans); // 剩余右括号一定不能小于左括号
+    if (left &gt; 0) dfs(left - 1, right, cur + '(', ans); // 左括号消耗完之前都可以继续加
+}
+</code></pre>
+<hr>
+<h4 id="24-swap-nodes-in-pairs">24.  Swap Nodes in Pairs</h4>
+<p><code>medium</code> <code>2019-07-20</code></p>
+<p>递归地交换链表中相邻的2个，注意碰到只剩0个和1个时直接返回。</p>
+<pre><code class="language-cpp">if (!head || !(head-&gt;next)) return head;
+ListNode *p = head, *q = p-&gt;next;
+p-&gt;next = swapPairs(q-&gt;next);
+q-&gt;next = p;
+return head;
+</code></pre>
+<hr>
 <h4 id="26-remove-duplicates-from-sorted-array">26. Remove Duplicates From Sorted Array</h4>
 <p><code>easy</code> <code>2019-03-10</code></p>
 <p>基本思想是处理后的数组各元素的下标一定小于等于原数组各元素的下标。因此可以从左至右逐个比对，然后将新元素直接覆盖原有位置的元素。</p>
@@ -180,6 +205,43 @@ while (end &lt; haystack.length()) {
     }
 }
 return -1;
+</code></pre>
+<hr>
+<h4 id="29-divide-two-integers">29. Divide Two Integers</h4>
+<p><code>medium</code> <code>2019-07-20</code></p>
+<p>使用位操作实现两数相除。我们采用这样的思想：<a href="https://leetcode.com/problems/divide-two-integers/discuss/13407/C%2B%2B-bit-manipulations">链接</a> 一个数字在二进制下总可以表达为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>q</mi><mo>=</mo><msub><mi>a</mi><mi>i</mi></msub><msup><mn>2</mn><mi>i</mi></msup><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>a</mi><mn>0</mn></msub><msup><mn>2</mn><mn>0</mn></msup></mrow><annotation encoding="application/x-tex">q=a_i2^i+\cdots+a_02^0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.974664em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.824664em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="minner">⋯</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.964108em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span>的形式，例如<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>15</mn><mi mathvariant="normal">/</mi><mn>3</mn><mo>=</mo><mn>5</mn><mo>=</mo><mo stretchy="false">(</mo><mn>101</mn><msub><mo stretchy="false">)</mo><mn>2</mn></msub><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><msup><mn>2</mn><mn>0</mn></msup></mrow><annotation encoding="application/x-tex">15/3=5=(101)_2=2^2+2^0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord">5</span><span class="mord">/</span><span class="mord">3</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">5</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mord">0</span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span>，即<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>15</mn><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup><mo>×</mo><mn>3</mn><mo>+</mo><msup><mn>2</mn><mn>0</mn></msup><mo>×</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">15=2^2\times 3+2^0\times 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span>，因此我们可以采取如下的思路，将<code>divisor</code>不断左移一位，直到再移就超过<code>dividend</code>为止，然后用<code>dividend</code>减去，例如<code>3 &lt;&lt; 2 = 12, 15 - 12 = 3</code>，用新的数作为新的<code>dividend</code>，重复上面的过程，直到<code>dividend = 0</code>，例如<code>3 &lt;&lt; 0 = 3, 3 - 3 = 0</code>。此时每次移的数位相加：<code>1 &lt;&lt; 2 + 1 &lt;&lt; 0 = 5</code>即为所求的商。</p>
+<p>有了这样的思想之后，我们可以实现代码如下：</p>
+<p>当<code>divisor=0</code>时将出现溢出；当<code>divisor=-1且dividend=INT_MIN</code>时也会溢出；当<code>divisor=1</code>且<code>dividend==INT_MIN</code>时，由于计算过程中会现将<code>dividend</code>变为正，结果也会出现溢出。因此先处理这3种情况。</p>
+<pre><code class="language-cpp">if (divisor == 0) return INT_MAX;
+if (divisor == 1) return dividend;
+if (divisor == -1) return dividend == INT_MIN ? INT_MAX : -dividend;
+</code></pre>
+<p>因为我们在将<code>divisor</code>左移的过程中，要使其大于<code>dividend</code>，因此很可能出现溢出的情况，所以我们使用<code>long long</code>类型来保存计算的中间变量防止溢出。代码如下：</p>
+<pre><code class="language-cpp">long long nom = dividend, den = divisor;
+nom = nom &lt; 0 ? -nom : nom;
+den = den &lt; 0 ? -den : den;
+int quo = 0;
+while (nom &gt;= den) {
+    long long tmp = den, m = 1;
+    while ((tmp &lt;&lt; 1) &lt;= nom) { tmp &lt;&lt;= 1; m &lt;&lt;= 1; } // 尝试左移，直到大于被除数为止
+    nom -= tmp; quo |= m;
+}
+return (dividend &lt; 0 ^ divisor &lt; 0) ? -quo : quo; // 异号时取负
+</code></pre>
+<p>这种利用更大的存储空间的行为有作弊之嫌，假如要求两个<code>long long</code>类型数字的除法就没有办法了，因此我们想只使用<code>int</code>类型的存储空间来完成这个运算。</p>
+<p>为了避免出现中间结果溢出的情况，我们首先对<code>divisor=INT_MIN</code>的情况做处理，它会在变为正数时中溢出。然后对于<code>dividend=INT_MIN</code>时可能出现的溢出，我们将其加上<code>abs(divisor)</code>，并对商增1。之后在<code>divisor</code>左移的过程中，我们通过增加<code>(divisor&lt;&lt;1) &gt; 0</code>这个条件来判断是否溢出。</p>
+<pre><code class="language-cpp">if (divisor == INT_MIN) return dividend == INT_MIN ? 1 : 0;
+int sign = dividend &lt; 0 ^ divisor &lt; 0, quo = 0;
+divisor = divisor &lt; 0 ? -divisor : divisor;
+if (dividend == INT_MIN) { dividend += divisor; quo++;}
+dividend = dividend &lt; 0 ? -dividend : dividend;
+while (dividend &gt;= divisor) {
+    int d = dividend, r = divisor, m = 1;
+    while ((r &lt;&lt; 1) &gt; 0 &amp;&amp; (r &lt;&lt; 1) &lt;= d) // 如果r即将溢出，那么 r&lt;&lt;1 的符号位会变为1，被解释为负数
+    		{ r &lt;&lt;= 1; m &lt;&lt;= 1; } 
+    dividend -= r; quo += m;
+}
+return sign ? -quo : quo;
 </code></pre>
 
             </div>
