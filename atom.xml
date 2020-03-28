@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://pikameow.github.io/</id>
     <title>Pika</title>
-    <updated>2020-03-28T03:10:07.453Z</updated>
+    <updated>2020-03-28T06:53:25.257Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://pikameow.github.io/"/>
     <link rel="self" href="https://pikameow.github.io//atom.xml"/>
@@ -11,12 +11,89 @@
     <icon>https://pikameow.github.io//favicon.ico</icon>
     <rights>All rights reserved 2020, Pika</rights>
     <entry>
+        <title type="html"><![CDATA[KMP算法]]></title>
+        <id>https://pikameow.github.io//post/algo-kmp</id>
+        <link href="https://pikameow.github.io//post/algo-kmp">
+        </link>
+        <updated>2020-03-28T06:38:49.000Z</updated>
+        <content type="html"><![CDATA[<p><em>声明：文章内容可能来自各种地方或经稍加修改，如有侵权，立即删除。</em></p>
+<blockquote>
+<p>前言：这篇文章是一篇学习笔记，内容来自于“左神算法课”，视频链接<a href="https://www.bilibili.com/video/BV1zJ411T7Wf">在此</a>。虽然已经了解KMP算法很久，但是再次看完课程仍然觉得很有收获，尤其是实现部分理解起来非常通顺，虽然相比于模板稍显复杂，但整个代码甚至可以直接用文字逐行解释出来，也方便理解记忆，强烈推荐！</p>
+</blockquote>
+<h3 id="算法思想">算法思想</h3>
+<p>KMP算法解决的是“包含”问题，也就是一个序列中是否“连续地”包含了另一个序列，典型的场景就是判断一个字符串是否包含在另一个字符串中，但算法本身并不只局限于字符串。</p>
+<p>在一个朴素的字符串匹配问题中，假设需要判断字符串<code>T</code>是否为<code>S</code>的一个子串，朴素的方法是，将字符串<code>S</code>中「所有与<code>T</code>长度相同的子串」都与字符串<code>T</code>进行逐字符比较，如果能够找到一个完全相同的子串，那么字符串<code>T</code>是字符串<code>S</code>的一个子串。在这种方法下，从<code>S</code>中按照<strong>任意</strong>顺序取出若干个长度与<code>T</code>相同的子串都是可以的，在匹配的过程中并没有利用“比较字符”以外的任何信息。</p>
+<p>KMP算法通过在匹配的过程中指定匹配的顺序，并使用一些信息来加速比较的过程。这个信息是什么呢？是字符串<code>T</code>的「每个字符前字符串的前缀与后缀的最长匹配长度」，以下简称“<strong>第<code>i</code>个字符的最长后缀长度</strong>”。这个长度的计算有如下的限制：</p>
+<p>“该字符串的前缀不能包含最后一个字符，该字符串的后缀不能包含第一个字符”。</p>
+<p>如果没有这一限制，那么所有字符串的前缀与后缀的最长匹配长度均为该字符串本身的长度，因为这个结论对所有字符串都成立，所以这个长度值没有增加任何信息。</p>
+<p>根据这一原则，假设对字符串<code>T</code>中的每个字符，都可以计算出这一长度值，那么就可以利用该值来加速字符串的匹配过程。下图是一个例子，注意第0个字符的长度值约定为-1。</p>
+<p><img src="https://pikameow.github.io//post-images/1585378267184.png" alt=""></p>
+<p>记<code>T</code>中所有字符的该长度值组成的数组为<code>next</code>，称为“后缀数组”。那么接下来如何利用该数组加速匹配过程呢？</p>
+<p>采用一般的顺序匹配，即首先将<code>S</code>中的第0个字符与<code>T</code>中的第0个字符进行比较，也就是字符串头对齐，接下来逐个字符匹配，如下图左所示，直到发现<code>S</code>中的第<code>x</code>个字符与<code>T</code>中的第<code>y</code>个字符不匹配，此时计算出<code>next[y]</code>的值，也就是第<code>y</code>个字符的最长后缀长度，并且找到<code>S</code>中第<code>x</code>个字符之前同样的长度，记起始处为第<code>j</code>个字符。接下来，将<code>T</code>的字符串头直接向右移动到与<code>S</code>中第<code>j</code>个字符对齐，并继续匹配。</p>
+<p><img src="https://pikameow.github.io//post-images/1585378298339.png" alt=""></p>
+<p>我们证明：这种“大胆”的移动方式并不会错失可能的匹配机会。即，将<code>T</code>的字符串头与<code>S</code>中第<code>i</code>和第<code>j</code>个字符之间的任意位置对齐，都不可能匹配。</p>
+<p>反证法：假设在<code>i</code>和<code>j</code>之间的某个位置<code>k</code>，字符串<code>S</code>和<code>T</code>能够匹配。如上图右所示。那么，一方面，<code>S</code>中从第<code>k</code>个字符开始到第<code>x</code>个字符之前的长度为<code>l</code>的子串与<code>T</code>中第<code>y</code>个字符之前等长的位置匹配，另一方面，将<code>S</code>的第<code>k</code>个字符与<code>T</code>的字符串头对齐时也能匹配，说明<code>T</code>的前<code>l</code>个字符也能与<code>S</code>中从第<code>k</code>个字符开始的<code>l</code>个字符匹配。这样我们就得到了一个“更长的”对于第<code>y</code>个字符的最长后缀长度，这与后缀数组的定义相矛盾。</p>
+<p>在这样的移动之后，我们发现<code>T</code>中开头的<code>'next[y]'</code>个字符与<code>S</code>中从第<code>j</code>个字符开始的<code>'next[y]'</code>个字符相同，也就不需要再进行重复比较，因此直接将<code>S</code>中第<code>x</code>个字符与<code>T</code>中第<code>z</code>个字符进行匹配。</p>
+<p>每次匹配的时候我们都按照这种“一旦不匹配，就右移字符串<code>T</code>一定距离”的思路，直到将字符串头，也就是第0个字符直接与<code>S</code>中的第<code>x</code>个字符相匹配，如果仍然不匹配，就需要将<code>S</code>中的右边一个字符，即第<code>x+1</code>个字符与<code>T</code>的字符头匹配。</p>
+<p>使用这种思路，我们就可以写出KMP算法的主程序：</p>
+<pre><code class="language-cpp">int KMP(string S, string T) {
+    if (T.size() == 0) return 0;
+    vector&lt;int&gt; next = getNext(T);
+    int i1 = 0, i2 = 0; // 使用两个指针分别遍历S和T
+    while (i1 &lt; S.size() &amp;&amp; i2 &lt; T.size()) {
+        if (S[i1] == T[i2]) { // 当字符匹配时，同时移动两个指针
+            i1++;
+            i2++;
+        } else if (next[i2] != -1) { // 当T还可以右移时，继续比较
+            i2 = next[i2];
+        } else { // 当T已经移动到第0个字符，那么需要移动S
+            i1++;
+        }
+    }
+    return i2 == T.size() ? i1 - i2 : -1; // 如果已经遍历完T，说明找到了匹配
+}
+</code></pre>
+<p>接下来我们看如何快速地计算<code>next</code>数组。</p>
+<p><img src="https://pikameow.github.io//post-images/1585378314616.png" alt=""></p>
+<p>使用数学归纳法的思路，首先，已经约定<code>next[0]=-1</code>，根据<code>next</code>数组计算的限制，有<code>next[1]=0</code>。接下来从第2个字符开始计算。对于第<code>i</code>个字符，我们认为<code>next[i]</code>取决于其之前的<code>next[0..i-1]</code>的取值。假设<code>next[i-1]=k</code>，也就是说第<code>i-1</code>个字符之前的字符串中，最长后缀长度为<code>k</code>，那么紧接着比较第<code>k</code>个字符（最长后缀对应的前缀之后的第一个字符）与第<code>i-1</code>个字符是否相等，这时分两种情况：</p>
+<ol>
+<li>如果相等，那么第<code>i</code>个字符的最长后缀长度恰好是第<code>i-1</code>个字符的最长后缀长度加1，即<code>k+1</code>。</li>
+<li>如果不相等，那么就把第<code>k</code>个字符看做新的区分点，假设<code>next[k]=l</code>，那么就接着比较第<code>l</code>个字符是否与第<code>i-1</code>个字符相同，此时又会分化出同样的两种情况。直到发现第0个字符与第<code>i-1</code>个字符仍然不相同，就可以确信第<code>i</code>个字符的最长后缀长度为<code>0</code>。</li>
+</ol>
+<p>根据这种思路，我们可以写出求next数组的子程序：</p>
+<pre><code class="language-cpp">vector&lt;int&gt; getNext(string T) {
+    vector&lt;int&gt; next(T.size());
+    next[0] = -1;
+    if (next.size() == 1) return next;
+    next[1] = 0;
+    int cn  = 0; // 区分点
+    for (int i = 2; i &lt; T.size();) {
+        if (T[cn] == T[i - 1]) { // 如果第cn个字符与第i-1个字符相同，那么长度加1
+            next[i++] = ++cn;
+        } else if (next[cn] != -1) { // 如果还可能存在更小的前缀后缀匹配
+            cn = next[cn];
+        } else { // 如果不可能再出现匹配
+            next[i++] = 0;
+        }
+    }
+    return next;
+}
+</code></pre>
+<h3 id="算法应用">算法应用</h3>
+<ol>
+<li>给定一个字符串，在其后面添加若干字符，如果新字符串(可重叠地)包含2个原字符串，问添加字符的最小数目。</li>
+<li>给定两棵二叉树<code>S</code>和<code>T</code>，问<code>T</code>是否(在树结构和结点取值上)与<code>S</code>的某一棵子树相同。</li>
+<li>给定一个字符串<code>S</code>，问它是否为某个字符串<code>T</code>(不重叠地)重复若干次得到的。</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[刷题笔记 - 树]]></title>
         <id>https://pikameow.github.io//post/leeetnode-note-tree</id>
         <link href="https://pikameow.github.io//post/leeetnode-note-tree">
         </link>
         <updated>2020-03-28T02:54:31.000Z</updated>
-        <content type="html"><![CDATA[<p><em>文章内容可能来自各种地方或经稍加修改，如有侵权，立即删除。</em></p>
+        <content type="html"><![CDATA[<p><em>声明：文章内容可能来自各种地方或经稍加修改，如有侵权，立即删除。</em></p>
 <p><ul class="markdownIt-TOC">
 <li>
 <ul>
