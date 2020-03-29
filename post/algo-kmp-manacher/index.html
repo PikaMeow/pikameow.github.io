@@ -3,8 +3,8 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>KMP算法 | Pika</title>
-<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1585473238678">
+<title>KMP算法 &amp; Manacher算法 | Pika</title>
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1585500287775">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
@@ -29,7 +29,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://pikameow.github.io/">
-  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1585473238678" alt="">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1585500287775" alt="">
   </a>
   <h1 class="site-title">
     Pika
@@ -87,7 +87,7 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              KMP算法
+              KMP算法 &amp; Manacher算法
             </h2>
             <div class="post-info">
               <time class="post-time">
@@ -105,7 +105,7 @@
 <blockquote>
 <p>前言：这篇文章是一篇学习笔记，内容来自于“左神算法课”，视频链接<a href="https://www.bilibili.com/video/BV1zJ411T7Wf">在此</a>。虽然已经了解KMP算法很久，但是再次看完课程仍然觉得很有收获，尤其是实现部分理解起来非常通顺，虽然相比于模板稍显复杂，但整个代码甚至可以直接用文字逐行解释出来，也方便理解记忆，强烈推荐！</p>
 </blockquote>
-<h3 id="算法思想">算法思想</h3>
+<h3 id="kmp算法思想">KMP算法思想</h3>
 <p>KMP算法解决的是“包含”问题，也就是一个序列中是否“连续地”包含了另一个序列，典型的场景就是判断一个字符串是否包含在另一个字符串中，但算法本身并不只局限于字符串。</p>
 <p>在一个朴素的字符串匹配问题中，假设需要判断字符串<code>T</code>是否为<code>S</code>的一个子串，朴素的方法是，将字符串<code>S</code>中「所有与<code>T</code>长度相同的子串」都与字符串<code>T</code>进行逐字符比较，如果能够找到一个完全相同的子串，那么字符串<code>T</code>是字符串<code>S</code>的一个子串。在这种方法下，从<code>S</code>中按照<strong>任意</strong>顺序取出若干个长度与<code>T</code>相同的子串都是可以的，在匹配的过程中并没有利用“比较字符”以外的任何信息。</p>
 <p>KMP算法通过在匹配的过程中指定匹配的顺序，并使用一些信息来加速比较的过程。这个信息是什么呢？是字符串<code>T</code>的「每个字符前字符串的前缀与后缀的最长匹配长度」，以下简称“<strong>第<code>i</code>个字符的最长后缀长度</strong>”。这个长度的计算有如下的限制：</p>
@@ -164,11 +164,97 @@
     return next;
 }
 </code></pre>
-<h3 id="算法应用">算法应用</h3>
+<h3 id="kmp算法应用">KMP算法应用</h3>
 <ol>
 <li>给定一个字符串，在其后面添加若干字符，如果新字符串(可重叠地)包含2个原字符串，问添加字符的最小数目。</li>
 <li>给定两棵二叉树<code>S</code>和<code>T</code>，问<code>T</code>是否(在树结构和结点取值上)与<code>S</code>的某一棵子树相同。</li>
 <li>给定一个字符串<code>S</code>，问它是否为某个字符串<code>T</code>(不重叠地)重复若干次得到的。</li>
+</ol>
+<h3 id="manacher算法原理">Manacher算法原理</h3>
+<p>Manacher算法是用来在一个序列中找到最长回文序列的算法。典型的应用场景就是寻求一个字符串<code>S</code>中的最长回文子串。</p>
+<p>在一个朴素的方法中，如果想要找到字符串中的最长回文子串，那么可以以每个字符为回文中心，向两边扩展，直到发现对称的两个字符不相等，此时停止并记录长度。然后比较所有的这些长度并取其最大值。这个方法有两个问题：</p>
+<ul>
+<li>
+<p>对于长度为偶数的回文串，它的回文中心并不在某个字符上，而是在中间两个字符的中心。</p>
+<p>对于这个问题，我们可以在字符的缝隙中都加入一个占位字符，比如<code>#</code>，然后再做同样的流程，此时偶数的回文串的回文中心会在占位字符上，从而不会被漏掉。</p>
+</li>
+<li>
+<p>每个回文中心位置都至多花费<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>时间扩展，于是总的时间复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>。</p>
+</li>
+</ul>
+<p>Manacher算法依然是指定寻找的顺序，并利用已经寻找过的位置信息来加速回文串的寻找过程。</p>
+<p>我们首先定义：一个回文串有左边界和右边界，“回文半径”为从回文中心到达回文边界的距离，相应也有“回文直径”。</p>
+<p><img src="https://pikameow.github.io//post-images/1585500257993.png" alt=""></p>
+<p>算法采取从左至右的顺序寻找，并且在寻找过程中保存每个位置的回文半径，并记目前已经寻找到的所有回文串的右边界中最靠右的位置称为“当前回文右边界”，以该位置为右边界的回文串中，回文中心最靠左的那个位置称为寻找过程中的“当前回文中心”。</p>
+<p>那么我们可以发现关于当前回文右边界和当前回文中心的一些性质：</p>
+<ul>
+<li>随着寻找的进行，当前回文右边界不会向左移动。</li>
+<li>如果在寻找的过程中，当前回文右边界没有向右移动，那么当前回文中心不会变化</li>
+</ul>
+<p>令当前回文中心的位置为<code>C</code>，当前回文右边界的位置为<code>R</code>，那么在寻找过程中的某个位置<code>i</code>，根据其与<code>R</code>的左右关系，可以分为两种策略：</p>
+<ol>
+<li>
+<p>如果<code>i&gt;R</code>，即当前搜寻的位置<code>i</code>在当前回文右边界以外，那么采取的策略就是以位置<code>i</code>为回文中心直接扩展，并在找到最长回文串后更新<code>R</code>和<code>C</code>。</p>
+<p>由于以<code>i</code>为中心的回文串的长度至少为1，因此<code>R</code>必定会增加，<code>C</code>也会跟着变动。</p>
+</li>
+<li>
+<p>如果<code>i≤R</code>，即当前搜寻的位置<code>i</code>在当前回文右边界以内，那么分3种子情况来考虑。</p>
+</li>
+</ol>
+<p>记位置<code>R</code>关于<code>C</code>的对称位置为<code>L</code>。在<code>i≤R</code>的情况下，<code>i</code>也在以<code>C</code>为中心的回文串中，那么必定有另一侧的位置<code>i'</code>与<code>i</code>关于<code>C</code>对称，此时根据以<code>i'</code>为中心的回文串的左边界的位置<code>l'</code>与<code>L</code>的大小关系，可以分为3种情况：</p>
+<p><img src="https://pikameow.github.io//post-images/1585500273975.png" alt=""></p>
+<ol>
+<li>
+<p>如果<code>l'&gt;L</code>，此时<code>r&lt;R</code>，即以<code>i'</code>为中心的回文串被完全包含在以<code>C</code>为中心的回文串内，那么我们认为位置<code>i</code>的回文半径等于位置<code>i'</code>的回文半径，不需要再计算了。此时<code>R</code>和<code>C</code>均不需要更新。</p>
+<p>证明：首先，<code>[l',r']</code>范围内的字符与<code>[l,r]</code>范围内的字符是完全相同且顺序相反的，但由于<code>[l',r']</code>范围内的字符本身就是对称的，所以<code>[l,r]</code>范围内的字符也是对称的，因此以位置<code>i</code>为中心的回文串右边界至少为<code>r</code>。其次，假设以<code>i</code>为中心的回文串更长，那么必定有<code>X=Y</code>，而<code>X,Y</code>都关于<code>C</code>有对称位置相同的字符<code>X',Y'</code>，如果<code>X'=Y'</code>，那么以<code>i'</code>位置为中心的回文串就会更长，这与搜寻过程的原则矛盾，因此以<code>i</code>为中心到的回文串不可能更长。</p>
+</li>
+<li>
+<p>如果<code>l'&lt;L</code>,即以<code>i'</code>为中心的回文串没有被完全包含在以<code>C</code>为中心的回文串内，我们认为位置<code>i</code>的回文半径的右边界<code>r=R</code>。此时<code>R</code>和<code>C</code>也均不需要更新。</p>
+<p>证明：使用上一种情况的证明，可以得知以位置<code>i</code>为中心的回文串的左右边界至少是<code>l</code>和<code>r</code>。假如以<code>i</code>为中心的回文串更长，即<code>X=Y</code>。因为以<code>C</code>为中心的回文串没有更长，所以<code>Y≠Y'</code>；而<code>Y'</code>在以<code>i'</code>为中心的回文串范围内，其关于<code>i'</code>的对称位置为<code>X'</code>，所以<code>Y'=X'</code>；<code>X'</code>又关于<code>C</code>对称到位置<code>X</code>，所以<code>X'=X</code>；从而可以推出<code>Y≠X</code>，所以以<code>i</code>为中心的回文串不可能更长。</p>
+</li>
+<li>
+<p>如果<code>l'=L</code>，即以<code>i'</code>为中心的回文串左边界恰与以<code>C</code>为中心的回文串左边界重合，我们认为位置<code>i</code>的回文半径的右边界至少为<code>r=R</code>，但还需要继续尝试扩展。</p>
+<p>证明：这种情况与上一种情况类似，但在边界<code>R</code>以外的部分无法确定，所以需要继续尝试扩展。</p>
+</li>
+</ol>
+<p>在从左至右找到以所有位置<code>i</code>为中心的回文半径后，就可以计算出最长的回文串的长度及位置。</p>
+<p>使用这种思路，我们可以写出对应的代码：</p>
+<pre><code class="language-cpp">string longestPalindrome(string s) {
+    if (s.size() == 0) return &quot;&quot;;
+    string tmp(&quot;#&quot;); // 构造带占位符的新字符串
+    for (auto &amp;c : s) { tmp = tmp + c + '#'; }
+    int n = tmp.size();
+    vector&lt;int&gt; rad(n); // 回文半径数组
+    int C = -1, R = -1;
+    for (int i = 1; i &lt; n; i++) {
+        // 根据R和i的关系，判断当前已知的最大回文半径是多少
+        int r = (R &gt; i ? min(rad[2 * C - i], R - i) : 1);
+        while (i - r &gt;= 0 &amp;&amp; i + r &lt; n &amp;&amp; tmp[i - r] == tmp[i + r]) {
+            r++;
+        }
+        rad[i] = r;
+        if (i + r &gt; R) {
+            R = i + r;
+            C = i;
+        }
+    }
+    int c, r = 0;
+    for (int i = 0; i &lt; n; i++) {
+        if (rad[i] &gt; r) {
+            r = rad[i];
+            c = i;
+        }
+    }
+    // 找到最长回文串对应于原字符串s中的位置
+    return s.substr(c / 2 - (r - 1) / 2, r - 1);
+}
+</code></pre>
+<p>值得一提的是，代码中我们只区分了<code>i</code>和<code>R</code>的两种关系，对于<code>i</code>在<code>R</code>内的3种情况，前2种情况已经不需要继续扩展了，但是为了代码的简洁，我们仍然认为它们可以继续扩展，造成的结果就是在<code>while</code>循环第一次判断时就会是<code>false</code>从而退出。</p>
+<p>算法复杂度：考虑在搜寻过程中当前回文右边界<code>R</code>的变化，回顾之前的总计4种情况，其中有2种<code>R</code>不会发生变化，有1种<code>R</code>一定会变化，剩下1种<code>R</code>可能会变化。但是由于<code>R</code>是不会左移的，所以随着从左至右的搜索过程，<code>R</code>也会从初始的<code>-1</code>到达字符串的末尾，因此整个过程是线性的遍历，复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">)</span></span></span></span>。</p>
+<p>换句话说，每次以某个字符为中心向外扩展，如果扩展成功，<code>R</code>会增大，如果扩展不成功，那么会立即尝试下一个字符，所以<code>R</code>至多变化<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>次。</p>
+<h3 id="manacher算法应用">Manacher算法应用</h3>
+<ol>
+<li>在一个字符串后至少可以添加几个字符将其变为回文串</li>
 </ol>
 
             </div>
