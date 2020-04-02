@@ -1,0 +1,333 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>二叉树的三种遍历 | Pika</title>
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1585842737049">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-73050124-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-73050124-2');
+</script>
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://pikameow.github.io/">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1585842737049" alt="">
+  </a>
+  <h1 class="site-title">
+    Pika
+  </h1>
+  <p class="site-description">
+    May you shine up with the stars
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/PikaMeow" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              二叉树的三种遍历
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2020-04-02 ·
+              </time>
+              
+                <a href="https://pikameow.github.io//tag/T2d5gHrJK" class="post-tag">
+                  # Algorithm
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <p><em>声明：文章内容可能来自各种地方或经稍加修改，如有侵权，立即删除。</em></p>
+<p><ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86">深度优先遍历</a></li>
+<li><a href="#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86">广度优先遍历</a></li>
+<li><a href="#morris%E9%81%8D%E5%8E%86">Morris遍历</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</p>
+<blockquote>
+<p>前言：本文是在看了<a href="https://www.bilibili.com/video/BV1zJ411T7Wf?p=3">视频</a>以及在LeetCode上刷二叉树相关题目时看到<a href="https://leetcode-cn.com/problems/binary-tree-preorder-traversal/solution/leetcodesuan-fa-xiu-lian-dong-hua-yan-shi-xbian-2/">分享</a>之后所做的笔记和总结，深感树这一结构在实际算法设计中的广泛用途，不管是搜索算法还是动态规划算法，都可以放到树的框架下来理解，因此了解树的基本遍历形式对解决这些问题都会有所启发。</p>
+</blockquote>
+<p>遍历一棵二叉树的用途之一是找到树中所有的结点，或者说提取所有结点中所含有的信息。而根据访问所有结点的顺序不同，树的遍历有多种形式，整体上可以分为深度优先遍历、广度优先遍历以及特殊的Morris遍历。前两种遍历方式使用的场景非常广泛，也叫做深度优先搜索(DFS)和广度优先搜索(BFS)，被许多可以建模为树的问题中搜寻可行解。而Morris遍历类似于深度优先遍历，但在遍历过程中它只额外占用<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>的空间，是一种非常巧妙的遍历方法。</p>
+<h4 id="深度优先遍历">深度优先遍历</h4>
+<p>顾名思义，深度优先遍历要求尽快地从根节点搜索到叶节点，那么最简单的方式就是利用递归的思想，给定一棵树的根节点<code>root</code>，那么首先访问根节点本身，然后移动到其左子树的根节点上遍历，最后移动到其右子树的根节点上遍历。如果写成递归函数，就是类似如下的形式：</p>
+<pre><code class="language-cpp">struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+void traversal(TreeNode *root) {
+    if (root == NULL)
+        return;
+    // first visit
+    traversal(root-&gt;left);
+    // second visit
+    traversal(root-&gt;right);
+    // third visit
+}
+</code></pre>
+<p>我们发现，除了递归的边界情况，也就是输入的节点为空之外，对于每个结点<code>p</code>的函数调用，在经历了两次对其子节点的递归调用的间隙，先后<strong>三次</strong>在<code>traversal(p)</code>函数中停留。根据哪一次停留时将节点<code>p</code>的信息提取出来，我们将遍历分为三种形式：前序遍历，中序遍历和后序遍历。</p>
+<ul>
+<li>如果在调用节点<code>p</code>的左子树之前就将其信息提取出来，那么最后得到的所有结点的次序称为「先序」。</li>
+<li>如果在调用节点<code>p</code>的左子树之后，但在调用节点<code>p</code>的右子树之前将其信息提取出来，那么最后得到的所有结点的次序称为「中序」。</li>
+<li>如果在调用节点<code>p</code>的右子树之后才将其信息提取出来，那么最后得到的所有结点的次序称为「后序」。</li>
+</ul>
+<p>在这种认识的基础上，在函数<code>traversal(p)</code>的三个位置添加上提取节点信息的语句，那么就得到了对这棵二叉树进行三种次序遍历的程序实现。</p>
+<p>由于对每个节点都只停留了三次，那么将整棵树所有的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span>个节点遍历完成所花费的时间复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>。另外，在递归的过程中会使得系统栈越来越深，直到访问到叶节点后才会返回，如果二叉树的高度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">h</span></span></span></span>，那么这种方式的空间复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>h</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(h)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">h</span><span class="mclose">)</span></span></span></span>。</p>
+<p>我们在一棵简单的树上模拟递归调用，并按顺序记录下三次对各节点的访问，可以更清晰地看出这几种次序如何产生。</p>
+<p><img src="https://pikameow.github.io//post-images/1585842643919.png" alt=""></p>
+<p>之所以这种遍历方式要依靠(系统)栈的结构，是因为在普通的二叉树中并没有指向父节点的指针，因此如果没有存储访问到的某个节点，那么在访问到子节点之后就无法再向父节点返回。那么除了递归利用系统栈的方法之外，还可以通过迭代的方式通过手动建立栈来实现遍历。</p>
+<p>通过迭代方式实现的整体思路是：建立一个栈<code>s</code>，首先将根节点压入栈，接着不断地从栈中弹出结点，并且分别将其左右子树压入栈，直到所有的结点都被弹出栈。但是对于在何时提取节点的信息，从而实现节点不同次序的遍历，在具体实现中会有一些差别，实现的难度也不一而足。</p>
+<p>首先是先序遍历，先序遍历的思想就是在第一个“见到”某个节点，就将其信息提取出来。按照上述的思路可以直接实现：</p>
+<pre><code class="language-cpp">void PreOrder(TreeNode* root) {
+    stack&lt;TreeNode *&gt; s;
+    vector&lt;int&gt; ans;
+    if (!root) return ans;
+    s.push(root);
+    while (!s.empty()) {
+        TreeNode *p = s.top();
+        s.pop();
+        ans.push_back(p-&gt;val); // 在将左右子树压入栈之前，就提取节点的信息
+        if (p-&gt;right) s.push(p-&gt;right);
+        // 后压入左子树，左子树的根节点会在栈顶，会先取出以达到先遍历左子树的目的
+        if (p-&gt;left) s.push(p-&gt;left); 
+    }
+    return ans;
+}
+</code></pre>
+<p>其次是后序遍历，如果仔细观察先序遍历与后序遍历，就会发现，如果把原树做镜面翻转，那么原来的后序就会变成新树的先序。因此在实现后序遍历的时候，完全可以按照先序遍历的形式，只是需要做两点变化：</p>
+<ul>
+<li>将左子树和右子树的先后访问顺序调换。</li>
+<li>将提取节点信息的顺序反序。</li>
+</ul>
+<p><img src="https://pikameow.github.io//post-images/1585842658266.png" alt=""></p>
+<p>于是我们可以对先序遍历的实现稍加修改：</p>
+<pre><code class="language-cpp">void PostOrder(TreeNode* root) {
+    stack&lt;TreeNode *&gt; s;
+    list&lt;int&gt; l;
+    if (!root) return vector&lt;int&gt;();
+    s.push(root);
+    while (!s.empty()) {
+        TreeNode *p = s.top();
+        s.pop();
+        l.push_front(p-&gt;val); // 将每次提取的节点信息都加到链表头部
+        if (p-&gt;left) s.push(p-&gt;left);
+        if (p-&gt;right) s.push(p-&gt;right); // 后压入右子树根节点，会先取出以遍历右子树
+    }
+    return vector&lt;int&gt;(l.begin(), l.end());
+}
+</code></pre>
+<p>而中序的迭代实现就稍微复杂一些，对于先序和后序遍历，我们都会在将左右子树的根节点压入栈之前就将当前结点的信息提取出来，区别在于将结点信息放到结果的头部还是尾部。但是对于中序遍历，必须在将左右子树的根节点压入栈<strong>之间</strong>将当前结点的信息提取出来，这样我们需要使用栈来做到将当前结点的左子树遍历完之后立刻提取当前结点的信息，再遍历右子树。</p>
+<p><img src="https://pikameow.github.io//post-images/1585842675355.png" alt=""></p>
+<p>为了实现这一点，我们需要在栈中建立一个“左子树结点”的序列，通过不断地将结点的左子树压入栈，从栈底到栈顶就形成了“左子树结点”的序列，当发现某个结点没有左子树后，立刻将其从栈中弹出并提取结点信息，然后对结点的右子树做同样的遍历操作。使用这一思路，我们还需要一个另外的指针来辅助记录右子树的根节点，从而实现对右子树的“左子树结点”序列进行同样的压栈操作。程序实现如下：</p>
+<pre><code class="language-cpp">void InOrder(TreeNode* root) {
+    stack&lt;TreeNode *&gt; s;
+    vector&lt;int&gt; ans;
+    TreeNode *cur = root;
+    while (!s.empty() || cur != NULL) {
+        while (cur) { // 不断地将左子树根节点压入栈
+            s.push(cur);
+            cur = cur-&gt;left;
+        }
+        TreeNode *p = s.top();
+        s.pop();
+        ans.push_back(p-&gt;val);
+        if (p-&gt;right) { // 在提取完当前结点信息后找到右子树根节点，接着处理其“左子树结点”的序列
+            cur = p-&gt;right;
+        }
+    }
+    return ans;
+}
+</code></pre>
+<h4 id="广度优先遍历">广度优先遍历</h4>
+<p>广度优先遍历又称层次遍历，根据结点与根节点的距离（也称该结点的高度）进行区分，按照从小到大的顺序，直到将当前高度的所有结点全部访问完毕，才会去访问高度更大的节点。</p>
+<p>对于广度优先遍历，常用的辅助结构是队列，在遍历过程中，每访问到一个结点，就将其左右子树的根节点都放入队列尾，这种方式使得同一高度的所有结点都紧挨着在队列中，根据队列FIFO的属性，在从队列首取出，将这些结点访问完之前，高度更大的结点是不会被访问到的。</p>
+<pre><code class="language-cpp">vector&lt;vector&lt;int&gt;&gt; levelOrder(TreeNode *root) {
+    vector&lt;vector&lt;int&gt;&gt; ans;
+    queue&lt;TreeNode *&gt; q;
+    if (root==NULL) return ans;
+    q.push(root);
+    int depth = 0;
+    while (!q.empty()) {
+        ans.push_back(vector&lt;int&gt;());
+        int sz = q.size();
+        for (int i = 0; i &lt; sz; i++) { // 取出当前深度的所有结点
+            TreeNode *p = q.front();
+            q.pop();
+            ans[depth].push_back(p-&gt;val);
+            if (p-&gt;left) q.push(p-&gt;left);
+            if (p-&gt;right) q.push(p-&gt;right);
+        }
+        depth++; // 开始遍历下一层的结点
+    }
+    return ans;
+}
+</code></pre>
+<p>我们可以发现，如果顺次访问结果数组中所有的结点，那么就是按照结点的高度排列，且同一高度的结点从左到右排列。而如果我们能够将某个结点与它所在的高度信息绑定在一起，宽度优先遍历也可以通过递归来实现，递归的形式与深度优先搜索的形式很类似，只是对每个结点都附加了一个高度信息，使得在递归访问到某个结点时，就在对应高度的结果数组中加入该结点的信息。</p>
+<pre><code class="language-cpp">vector&lt;vector&lt;int&gt;&gt; ans;
+void traversal(TreeNode *p, int depth) {
+    if (ans.size() == depth) ans.push_back(vector&lt;int&gt;());
+    ans[depth].push_back(p-&gt;val);
+    if (p-&gt;left) traversal(p-&gt;left, depth + 1);
+    if (p-&gt;right) traversal(p-&gt;right, depth + 1);
+}
+vector&lt;vector&lt;int&gt;&gt; levelOrder(TreeNode *root) {
+    if (root == NULL) return ans;
+    traversal(root, 0); // 从第0层的root节点开始访问
+    return ans;
+}
+</code></pre>
+<p>宽度优先一般有两种次序，按照高度<strong>由低到高</strong>的顺序以及<strong>由高到低</strong>的顺序。在上面的实现中，结果是一个二维数组，如果需要按照结点由高到低的顺序输出，只需要将整体的结果数组反序即可；而如果还需要同一层的结点按照从右到左的顺序，只需要将各层结点所在的数组也反序即可。</p>
+<h4 id="morris遍历">Morris遍历</h4>
+<p>Morris遍历是另外的一种遍历方式，只额外占用<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>的空间。它所采用的技巧是充分利用树的叶节点中存在的空指针，使得在遍历过程中能够直接从后代结点回到祖先结点，而不需要依赖栈结构。</p>
+<p>Morris遍历的流程是这样的：</p>
+<p>假设当前所在的结点为<code>p</code>，找到<code>p</code>的左子树中最右的结点，然后判断该节点的右指针的状态</p>
+<ul>
+<li>
+<p>如果该指针为空，说明是第一次访问到该结点，于是将该结点的右指针指向结点<code>p</code></p>
+<p>然后将<code>p</code>移动到其左指针指向的节点，重复之前的操作</p>
+</li>
+<li>
+<p>如果该指针不为空，说明是第二次访问到该结点，于是将该结点的右指针重新置为空</p>
+<p>然后将<code>p</code>移动到其右指针指向的节点，重复之前的操作</p>
+</li>
+</ul>
+<p>直到结点<code>p</code>变为空，说明整棵树被遍历完毕。</p>
+<p>整个流程可以分为两个部分：首先，如果<code>p</code>的左子树的最右结点的右指针<code>r</code>为空，那么说明结点<code>p</code>的左子树尚未被遍历，接下来准备访问左子树，此时修改<code>r</code>使其指向结点<code>p</code>是为了在遍历完整个左子树后还能够回到结点<code>p</code>；其次，如果再次回到结点<code>p</code>后又检查<code>r</code>的状态，会发现<code>r</code>不为空，这是我们就知道左子树已经遍历完毕，从而将<code>r</code>重新置为空，然后继续遍历<code>p</code>的右子树。</p>
+<p>因此，指针<code>r</code>的状态变化只是为了让结点<code>p</code>能够判断它的左子树是否已经遍历完毕，而付出的时间代价就是“2次访问结点<code>p</code>的左子树中最右的结点”。</p>
+<p><img src="https://pikameow.github.io//post-images/1585842690037.png" alt=""></p>
+<p>Morris遍历的复杂度关键取决于“搜寻某结点左子树的最右结点”的耗时。而我们发现，在搜寻某结点左子树的最右结点时，会遍历一个“右子树结点序列”，整棵树中所有的“右子树结点序列”中的结点数是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">)</span></span></span></span>数量级，而每个“右子树结点序列”只会访问2次，所以整个遍历的复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">)</span></span></span></span>。</p>
+<p>接下来我们可以将整个思路变为代码：</p>
+<pre><code class="language-cpp">vector&lt;int&gt; ans;
+TreeNode *cur = root, *rightmost = NULL;
+while (cur != NULL) {
+    rightmost = cur-&gt;left;
+    if (rightmost != NULL) {
+        // 寻找结点cur的左子树的最右结点
+        while (rightmost-&gt;right != NULL &amp;&amp; rightmost-&gt;right != cur) {
+            rightmost = rightmost-&gt;right;
+        }
+        // 根据最右结点的2种状态做出不同的反应
+        if (rightmost-&gt;right == NULL) {
+            rightmost-&gt;right = cur;
+            cur = cur-&gt;left;
+            continue;
+        } else {
+            rightmost-&gt;right = NULL;
+        }
+    }
+    cur = cur-&gt;right;
+}
+return ans;
+</code></pre>
+<p>在这种遍历模式下，所有的“左子树非空的结点”都被访问到了2次，一次是以该节点作为根结点，另一次是从该节点的左子树回来。那么通过区分在第1次或第2次访问到某结点的时候提取该结点的信息，也可以做到深度优先遍历时的前序和中序遍历。</p>
+<p><img src="https://pikameow.github.io//post-images/1585842710889.png" alt=""></p>
+<p>而对于后序遍历，不太适合用Morris遍历实现。如果想要实现后序遍历，需要在结点<code>p</code>移动到其右子树的根节点之前，提取结点<code>p</code>对应的“右子树结点序列”中各结点的信息，并且是按照高度从高到低的顺序；并在所有结点访问完后，用同样的方式提取树的“右边界结点序列”的各结点信息。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://pikameow.github.io//post/leetcode-note-dfs">
+              <h3 class="post-title">
+                刷题笔记 - DFS
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Email: zzyzlpy \at gmail \dot com | 
+  <a class="rss" href="https://pikameow.github.io//atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
