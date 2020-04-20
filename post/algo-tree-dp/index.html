@@ -1,0 +1,272 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>树形动态规划 | Pika</title>
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1587362805014">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-73050124-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-73050124-2');
+</script>
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://pikameow.github.io/">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1587362805014" alt="">
+  </a>
+  <h1 class="site-title">
+    Pika
+  </h1>
+  <p class="site-description">
+    May you shine up with the stars
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/PikaMeow" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              树形动态规划
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2020-04-20 ·
+              </time>
+              
+                <a href="https://pikameow.github.io//tag/T2d5gHrJK" class="post-tag">
+                  # Algorithm
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <p><em>声明：文章内容可能来自各种地方或经稍加修改，如有侵权，立即删除。</em></p>
+<p><ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E6%96%B9%E6%B3%95%E5%8E%9F%E7%90%86">方法原理</a></li>
+<li><a href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF">应用场景</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</p>
+<blockquote>
+<p>前言：本文来自<a href="https://www.bilibili.com/video/BV1jJ411E7Lm?p=8">视频</a>的笔记，树形动态规划可以用来解决树相关的一大类问题，一般是在某种约束下求最值的问题。它的方法框架比较简明易懂，是很能体现出动态规划中“信息复用”特点的一类方法。</p>
+</blockquote>
+<h4 id="方法原理">方法原理</h4>
+<p>动态规划(DP)的目的是通过最优子结构的性质来复用之前已经计算出来的较小规模的解，而在树这样一个结构中，“树”和“子树”的关系天然地构成了一种小规模-&gt;大规模的递进关系。因此在树中进行DP有一个普遍的做法是「对以每个结点为根的子树都求得一个解，然后将这个解的相关信息传递给父节点，以达到信息复用的目的」。因为树结构本身递归构建的特点，最后要求的解一定是包含在这些解之中的。</p>
+<p>我们首先通过一个简单的例子来了解一下树形DP的基本思路：给定一棵二叉树，求该树的最小值。</p>
+<p>对于一棵二叉树来说，从根节点来思考，要求的最小值要么是它本身，要么是在左子树中，要么是在右子树中。因此如果在处理根节点是已经获得了左子树和右子树上的最小值，那么通过简单的比较就可以得到结果。</p>
+<p>那么总结一下，最小值的可能性有3个：根节点本身，左子树的最小值，右子树的最小值。那么从子树根节点的角度考虑，它应该首先获取到子树的最小值，然后把这个信息告诉父节点，方便父节点进行判断，这样一直回溯到根节点，就得到了整棵树的最小值。</p>
+<p>有了这个思路，我们就可以很快写出一个递归版本的程序：</p>
+<pre><code>int findMin(TreeNode *root) {
+    // part1 : base case
+    if (root == NULL) return INT_MAX;
+    // part2 : get info from subtree
+    int leftMin  = findMin(root-&gt;left);
+    int rightMin = findMin(root-&gt;right);
+    // part3 : merge info and transfer to parent node
+    return min(root-&gt;val, min(leftMin, rightMin));
+}
+</code></pre>
+<p>整个程序用递归的方式非常容易实现，其中包含了3个部分：</p>
+<ol>
+<li>如果当前子树为空，那么应该返回一个“不影响父节点做出正确决定”的信息，例如这里就是返回一个整形最大值，使得父节点在进行min操作时能够知道子树为空，并且做出正确的判断。</li>
+<li>假设左子树和右子树的信息是“直接可得”的，直接递归调用获取结果即可。</li>
+<li>在得到左子树和右子树的信息后，结合结点本身的信息进行合并，并将相关的信息返回给父节点。</li>
+</ol>
+<p>在树形DP中，一个关键问题是「子节点应该将什么信息返回给父节点」，例如在这个例子中子树只需要返回各自的最小值即可，而在另外一些情况下，仅仅有子树的解并不能满足父节点的需求，因此还需要一些额外的信息。例如：给定一棵二叉树，判断它是否平衡 (平衡的定义是：一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过1) ？</p>
+<p>一棵树是否平衡，不仅仅取决于其左右子树是否平衡，这里分为3种情况：左子树不平衡，右子树不平衡，左右子树都平衡。对于前2种情况，子树的不平衡，那么树一定不平衡，而对于最后1种情况，还需要计算左右子树的高度差来进行判断。因此子节点不仅要返回平衡结果给父节点，还需要将子树的高度一并返回，从而在左右子树都平衡的情况下，使得父节点能够进行判断。可以得到代码如下：</p>
+<pre><code>struct Info {
+    bool isB; // 当前子树是否平衡
+    int h; // 当前子树高度
+    Info(bool isB, int h) : isB(isB), h(h) {}
+};
+
+Info helper(TreeNode *root) {
+    if (root == NULL) return Info(true, 0);
+  
+    // 如果任一棵子树不平衡，或高度差大于1，都返回 isB = false
+    Info left = helper(root-&gt;left);
+    if (left.isB == false) return Info(false, -1);
+    Info right = helper(root-&gt;right);
+    if (right.isB == false) return Info(false, -1);
+    if (abs(left.h - right.h) &gt; 1) return Info(false, -1);
+  
+    return Info(true, max(left.h, right.h) + 1); // return height to parent
+}
+
+bool isBalanced(TreeNode *root) {
+    Info ans = helper(root);
+    return ans.isB;
+}
+</code></pre>
+<p>再举一个例子：给定一棵二叉树，求其中“最大BST子树”的大小。</p>
+<p>对于根结点来说，最大BST子树要么在其左子树上，要么在其右子树上，要么是整个树本身。假设已经得到了左右子树中最大BST的大小，那么根节点应该怎么判断带上它自己后，是否能够构成一棵BST呢？</p>
+<p>一棵BST满足：左子树的所有结点值都小于根节点，右子树的所有结点值都大于根节点。因此子节点在向父节点返回信息时，除了返回各自的最大BST子树的大小之外，还应该返回其最大值(如果是作为左子树)和其最小值(如果是作为右子树)。另外，要想让某个结点成为BST的根节点，它的左子树和右子树本身都应该是BST，所以子节点还应该返回它的最大BST子树的根节点。</p>
+<pre><code class="language-cpp">struct Info {
+    int cnt, Min, Max; // 当前子树的 最大BST结点数目、最小结点值、最大结点值
+    TreeNode *head; // 当前子树的最大BST根节点
+    Info(int cnt, TreeNode *head, int Min, int Max) : cnt(cnt), head(head), Min(Min), Max(Max) {}
+};
+
+Info MaxSubBST(TreeNode *root) {
+    if (root == NULL) {
+        // 边界情况的返回值不能影响父节点的合并
+        return Info(0, root, INT_MAX, INT_MIN);
+    }
+    Info left  = MaxSubBST(root-&gt;left);
+    Info right = MaxSubBST(root-&gt;right);
+    
+    // 如果结点root连同左右子树可以构成BST，那么一定更大，直接返回
+    if (root-&gt;left == left.head &amp;&amp; root-&gt;right == right.head &amp;&amp; root-&gt;val &gt; left.Max &amp;&amp; root-&gt;val &lt; right.Min) {
+        return Info(left.cnt + 1 + right.cnt, root,
+                    min(left.Min, root-&gt;val), max(right.Max, root-&gt;val));
+    }
+    return left.cnt &gt; right.cnt ? left : right;
+}
+
+// 调用 Info ans = MaxSubBST(root); 得到 ans.cnt 即为结果
+</code></pre>
+<p>从这个问题可以发现，结点对子树信息的合并和处理也是非常有技巧的。而树形DP还有一个关键点是「如何得知解的所有可能性」，在上面的问题中，解要么是根节点、左子树、右子树中取极值，要么是将三者组合起来得到最优的解，而另外有一些问题，解的所有可能性并不容易找出来。</p>
+<p>例如：给定一棵二叉树，现在要从中选出一部分结点，要求直接相连的节点不能同时被选取，求所选择的节点值的最大和。</p>
+<p>由于每个结点的值不同，因此我们的目的并不是希望选出的节点数目尽可能多，而是节点值的和更大。另一方面，为了使得结点值的和最大，我们将会选取出“尽可能多”的节点，即选到“无法再找到不与任意已选择的节点直接相连的节点”为止。先从根节点考虑，最后的解只可能分2种情况，选择或未选择根节点。那么采取从根节点开始选择的次序，对任意一个节点，选择或不选择会有不同的约束：</p>
+<ul>
+<li>选择该节点，那么该节点的子节点都不能再选取。</li>
+<li>不选择该节点，那么该节点的子节点可以选取，也可以不选取。</li>
+</ul>
+<p>如果使用递归的思路，对于每棵子树的根节点来说，都应该根据以上约束选或不选该节点的时候，该子树所能得到的节点值最大和。然后将这些信息告诉父节点进行合并处理。最后只要返回对于根节点来说，选择或不选择所能得到的较大解，就是问题最终的解。</p>
+<pre><code>using PII = pair&lt;int,int&gt;;
+
+PII helper(TreeNode *root) {
+    PII ans(0, 0); // first:选择该节点的最大和，second:不选择该节点的最大和
+    if (root == NULL) return ans;
+    PII left   = helper(root-&gt;left);
+    PII right  = helper(root-&gt;right);
+    // 如果选择该节点，那么子节点不能再选择
+    ans.first  = root-&gt;val + left.second + right.second;
+    // 如果不选择该节点，那么子节点可选择可不选择
+    ans.second = max(left.first, left.second) + max(right.first, right.second);
+    return ans;
+}
+
+int MaxValue(TreeNode *root) {
+    PII ans = helper(root);
+    return max(ans.first, ans.second);
+}
+</code></pre>
+<h4 id="应用场景">应用场景</h4>
+<p>这里列出一些可以用树状DP来解决的问题：</p>
+<ol>
+<li>给定一棵二叉树，节点之间边权重为1，求任意两个节点间的最短路径的最大值。</li>
+<li>给定一棵二叉树，一条路径的值为路径上所有结点值的和，问树中值最大的路径的值是多少。</li>
+</ol>
+<h4 id="总结">总结</h4>
+<p>最后总结一下，树形DP是一种比较简单的DP，因为最优子结构已经天然地被包含在了子树之中，只要找到所有子树的最优解，那么问题最终的解一定在其中。结合递归的编程方式，树形DP的步骤如下：</p>
+<ol>
+<li>对于根节点来说，找到问题所有的可能性，以及这些可能性与左右子树的关系。</li>
+<li>确定根节点在计算某个(些)可能性时需要从左右子树中获取的信息。</li>
+<li>确定根节点得到子节点的信息之后应该如何合并，之后返回给其父节点。</li>
+<li>进行递归函数的编程，主要分为：边界情况、获得子树信息、处理子树信息并返回 三个部分。</li>
+</ol>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://pikameow.github.io//post/algo-monotone-queue-stack">
+              <h3 class="post-title">
+                单调队列与单调栈
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Email: zzyzlpy \at gmail \dot com | 
+  <a class="rss" href="https://pikameow.github.io//atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
