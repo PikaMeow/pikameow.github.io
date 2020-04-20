@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KMP算法 &amp; Manacher算法 | Pika</title>
-<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1587362805014">
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1587363075736">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
@@ -29,7 +29,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://pikameow.github.io/">
-  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1587362805014" alt="">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1587363075736" alt="">
   </a>
   <h1 class="site-title">
     Pika
@@ -164,7 +164,7 @@
     return next;
 }
 </code></pre>
-<h3 id="kmp算法应用">KMP算法应用</h3>
+<h4 id="kmp算法应用">KMP算法应用</h4>
 <ol>
 <li>给定一个字符串，在其后面添加若干字符，如果新字符串(可重叠地)包含2个原字符串，问添加字符的最小数目。</li>
 <li>给定两棵二叉树<code>S</code>和<code>T</code>，问<code>T</code>是否(在树结构和结点取值上)与<code>S</code>的某一棵子树相同。</li>
@@ -252,7 +252,7 @@
 <p>值得一提的是，代码中我们只区分了<code>i</code>和<code>R</code>的两种关系，对于<code>i</code>在<code>R</code>内的3种情况，前2种情况已经不需要继续扩展了，但是为了代码的简洁，我们仍然认为它们可以继续扩展，造成的结果就是在<code>while</code>循环第一次判断时就会是<code>false</code>从而退出。</p>
 <p>算法复杂度：考虑在搜寻过程中当前回文右边界<code>R</code>的变化，回顾之前的总计4种情况，其中有2种<code>R</code>不会发生变化，有1种<code>R</code>一定会变化，剩下1种<code>R</code>可能会变化。但是由于<code>R</code>是不会左移的，所以随着从左至右的搜索过程，<code>R</code>也会从初始的<code>-1</code>到达字符串的末尾，因此整个过程是线性的遍历，复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">)</span></span></span></span>。</p>
 <p>换句话说，每次以某个字符为中心向外扩展，如果扩展成功，<code>R</code>会增大，如果扩展不成功，那么会立即尝试下一个字符，所以<code>R</code>至多变化<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>次。</p>
-<h3 id="manacher算法应用">Manacher算法应用</h3>
+<h4 id="manacher算法应用">Manacher算法应用</h4>
 <ol>
 <li>在一个字符串后至少可以添加几个字符将其变为回文串</li>
 </ol>

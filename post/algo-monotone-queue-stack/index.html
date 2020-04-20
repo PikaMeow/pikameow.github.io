@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>单调队列与单调栈 | Pika</title>
-<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1587362805014">
+<link rel="shortcut icon" href="https://pikameow.github.io//favicon.ico?v=1587363075736">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://pikameow.github.io//styles/main.css">
@@ -29,7 +29,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://pikameow.github.io/">
-  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1587362805014" alt="">
+  <img class="avatar" src="https://pikameow.github.io//images/avatar.png?v=1587363075736" alt="">
   </a>
   <h1 class="site-title">
     Pika
@@ -107,15 +107,17 @@
 <ul>
 <li>
 <ul>
-<li>
+<li><a href="#%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97">单调队列</a>
 <ul>
-<li><a href="#%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97">单调队列</a></li>
 <li><a href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF">应用场景</a></li>
-<li><a href="#%E5%8D%95%E8%B0%83%E6%A0%88">单调栈</a></li>
-<li><a href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-2">应用场景</a></li>
-<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
 </ul>
 </li>
+<li><a href="#%E5%8D%95%E8%B0%83%E6%A0%88">单调栈</a>
+<ul>
+<li><a href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-2">应用场景</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
 </ul>
 </li>
 </ul>
@@ -125,7 +127,7 @@
 <blockquote>
 <p>前言：本文来自<a href="https://www.bilibili.com/video/BV1jJ411E7Lm?p=2">视频</a>的笔记，单调队列和单调栈都是用来求「带有某种约束的极值」的数据结构，在某些场景中的复杂度是最优的。</p>
 </blockquote>
-<h4 id="单调队列">单调队列</h4>
+<h3 id="单调队列">单调队列</h3>
 <p>单调队列的典型应用是求解「滑动窗口极值」问题。具体来说，给定一个数组<code>a</code>，两个索引<code>l</code>和<code>r</code>，满足<code>l≤r</code>，要求给出索引范围<code>[l,r]</code>内数组的极大(小)值，同时要求<code>l</code>和<code>r</code>合法的任意常数次移动，都需要在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>时间内获得极值。范围<code>[l,r]</code>在这里被称为滑动窗口。</p>
 <p>以“滑动窗口极大值”为例，通过构造一个「元素按照严格从大到小顺序排列的」双端队列<code>q</code>，可以满足问题对常数时间复杂度的要求。具体的流程如下：</p>
 <p>起初<code>l=r=-1</code>，即并不包含数组中的任何元素，接下来的合法操作只有2种：增大<code>r</code>和增大<code>l</code>。</p>
@@ -165,7 +167,7 @@
 <ol>
 <li>给定一个数组和一个阈值<code>t</code>，问所有满足最大值和最小值之差不大于<code>t</code>的所有子数组的个数。</li>
 </ol>
-<h4 id="单调栈">单调栈</h4>
+<h3 id="单调栈">单调栈</h3>
 <p>单调栈的典型应用是给定一个数组<code>a</code>，问对某个元素<code>a[i]</code>，左侧和右侧第一个满足<code>a[l]&gt;a[i]&lt;a[r]</code>的索引<code>l</code>和<code>r</code>。要求在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">)</span></span></span></span>的时间内找到数组中所有元素的相应索引。</p>
 <p>通过构造一个「元素按照严格从大到小顺序排列的」栈<code>s</code>，就可以满足问题的要求。具体流程是，我们按照一定规则逐个将数组元素及其索引加入栈中：</p>
 <ul>
@@ -206,7 +208,7 @@
 <li>给定一组无序列的数字，将其构造为一棵MaxTree，即树中所有的父节点的值均大于子节点的值。</li>
 <li>给定一个数组，判断其是否为一棵二叉搜索树的先序遍历的结果。</li>
 </ol>
-<h4 id="总结">总结</h4>
+<h3 id="总结">总结</h3>
 <p>单调队列和单调栈的相似之处在于“单调”，即 队首/队尾，栈顶/栈底 总是保存着极值，因此在求极值问题上有很大的优势，二者的不同之处只是在于支持的操作不同，可以说双端队列是“包含”栈的，在一些问题上，可以根据需求选择任意一种数据结构。</p>
 
             </div>

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://pikameow.github.io/</id>
     <title>Pika</title>
-    <updated>2020-04-20T06:07:51.816Z</updated>
+    <updated>2020-04-20T06:11:16.892Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://pikameow.github.io/"/>
     <link rel="self" href="https://pikameow.github.io//atom.xml"/>
@@ -168,15 +168,17 @@ int MaxValue(TreeNode *root) {
 <ul>
 <li>
 <ul>
-<li>
+<li><a href="#%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97">单调队列</a>
 <ul>
-<li><a href="#%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97">单调队列</a></li>
 <li><a href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF">应用场景</a></li>
-<li><a href="#%E5%8D%95%E8%B0%83%E6%A0%88">单调栈</a></li>
-<li><a href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-2">应用场景</a></li>
-<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
 </ul>
 </li>
+<li><a href="#%E5%8D%95%E8%B0%83%E6%A0%88">单调栈</a>
+<ul>
+<li><a href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-2">应用场景</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
 </ul>
 </li>
 </ul>
@@ -186,7 +188,7 @@ int MaxValue(TreeNode *root) {
 <blockquote>
 <p>前言：本文来自<a href="https://www.bilibili.com/video/BV1jJ411E7Lm?p=2">视频</a>的笔记，单调队列和单调栈都是用来求「带有某种约束的极值」的数据结构，在某些场景中的复杂度是最优的。</p>
 </blockquote>
-<h4 id="单调队列">单调队列</h4>
+<h3 id="单调队列">单调队列</h3>
 <p>单调队列的典型应用是求解「滑动窗口极值」问题。具体来说，给定一个数组<code>a</code>，两个索引<code>l</code>和<code>r</code>，满足<code>l≤r</code>，要求给出索引范围<code>[l,r]</code>内数组的极大(小)值，同时要求<code>l</code>和<code>r</code>合法的任意常数次移动，都需要在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>时间内获得极值。范围<code>[l,r]</code>在这里被称为滑动窗口。</p>
 <p>以“滑动窗口极大值”为例，通过构造一个「元素按照严格从大到小顺序排列的」双端队列<code>q</code>，可以满足问题对常数时间复杂度的要求。具体的流程如下：</p>
 <p>起初<code>l=r=-1</code>，即并不包含数组中的任何元素，接下来的合法操作只有2种：增大<code>r</code>和增大<code>l</code>。</p>
@@ -226,7 +228,7 @@ int MaxValue(TreeNode *root) {
 <ol>
 <li>给定一个数组和一个阈值<code>t</code>，问所有满足最大值和最小值之差不大于<code>t</code>的所有子数组的个数。</li>
 </ol>
-<h4 id="单调栈">单调栈</h4>
+<h3 id="单调栈">单调栈</h3>
 <p>单调栈的典型应用是给定一个数组<code>a</code>，问对某个元素<code>a[i]</code>，左侧和右侧第一个满足<code>a[l]&gt;a[i]&lt;a[r]</code>的索引<code>l</code>和<code>r</code>。要求在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">)</span></span></span></span>的时间内找到数组中所有元素的相应索引。</p>
 <p>通过构造一个「元素按照严格从大到小顺序排列的」栈<code>s</code>，就可以满足问题的要求。具体流程是，我们按照一定规则逐个将数组元素及其索引加入栈中：</p>
 <ul>
@@ -267,7 +269,7 @@ int MaxValue(TreeNode *root) {
 <li>给定一组无序列的数字，将其构造为一棵MaxTree，即树中所有的父节点的值均大于子节点的值。</li>
 <li>给定一个数组，判断其是否为一棵二叉搜索树的先序遍历的结果。</li>
 </ol>
-<h4 id="总结">总结</h4>
+<h3 id="总结">总结</h3>
 <p>单调队列和单调栈的相似之处在于“单调”，即 队首/队尾，栈顶/栈底 总是保存着极值，因此在求极值问题上有很大的优势，二者的不同之处只是在于支持的操作不同，可以说双端队列是“包含”栈的，在一些问题上，可以根据需求选择任意一种数据结构。</p>
 ]]></content>
     </entry>
@@ -547,7 +549,7 @@ return ans;
     return next;
 }
 </code></pre>
-<h3 id="kmp算法应用">KMP算法应用</h3>
+<h4 id="kmp算法应用">KMP算法应用</h4>
 <ol>
 <li>给定一个字符串，在其后面添加若干字符，如果新字符串(可重叠地)包含2个原字符串，问添加字符的最小数目。</li>
 <li>给定两棵二叉树<code>S</code>和<code>T</code>，问<code>T</code>是否(在树结构和结点取值上)与<code>S</code>的某一棵子树相同。</li>
@@ -635,7 +637,7 @@ return ans;
 <p>值得一提的是，代码中我们只区分了<code>i</code>和<code>R</code>的两种关系，对于<code>i</code>在<code>R</code>内的3种情况，前2种情况已经不需要继续扩展了，但是为了代码的简洁，我们仍然认为它们可以继续扩展，造成的结果就是在<code>while</code>循环第一次判断时就会是<code>false</code>从而退出。</p>
 <p>算法复杂度：考虑在搜寻过程中当前回文右边界<code>R</code>的变化，回顾之前的总计4种情况，其中有2种<code>R</code>不会发生变化，有1种<code>R</code>一定会变化，剩下1种<code>R</code>可能会变化。但是由于<code>R</code>是不会左移的，所以随着从左至右的搜索过程，<code>R</code>也会从初始的<code>-1</code>到达字符串的末尾，因此整个过程是线性的遍历，复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">)</span></span></span></span>。</p>
 <p>换句话说，每次以某个字符为中心向外扩展，如果扩展成功，<code>R</code>会增大，如果扩展不成功，那么会立即尝试下一个字符，所以<code>R</code>至多变化<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>次。</p>
-<h3 id="manacher算法应用">Manacher算法应用</h3>
+<h4 id="manacher算法应用">Manacher算法应用</h4>
 <ol>
 <li>在一个字符串后至少可以添加几个字符将其变为回文串</li>
 </ol>
