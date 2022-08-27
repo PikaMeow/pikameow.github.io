@@ -1,0 +1,325 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>[笔记] 程序的可靠性、可扩展性和可维护性 | PIKA</title>
+
+<link rel="shortcut icon" href="https://pikameow.github.io/favicon.ico?v=1661589535880">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://pikameow.github.io/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            PIKA
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/post/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1661589535880" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    [笔记] 程序的可靠性、可扩展性和可维护性
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-08-13 ·
+                    </time>
+                    
+                        <a href="https://pikameow.github.io/tag/cd6bqTmiar/" class="post-tags">
+                            # DDIA
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <blockquote>
+<p>读书笔记：<a href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/">《Designing Data-Intensive Applications》</a><br>
+Chapter1. Reliable, Scalable, and Maintainable Applications</p>
+</blockquote>
+<figure data-type="image" tabindex="1"><img src="https://pikameow.github.io/post-images/1660396529479.png" alt="" loading="lazy"></figure>
+<p><ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E8%AE%A4%E8%AF%86%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F">认识数据系统</a></li>
+<li><a href="#%E5%8F%AF%E9%9D%A0%E6%80%A7">可靠性</a>
+<ul>
+<li><a href="#%E7%A1%AC%E4%BB%B6%E6%95%85%E9%9A%9C">硬件故障</a></li>
+<li><a href="#%E8%BD%AF%E4%BB%B6%E9%94%99%E8%AF%AF">软件错误</a></li>
+<li><a href="#%E4%BA%BA%E4%B8%BA%E9%94%99%E8%AF%AF">人为错误</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7">可扩展性</a>
+<ul>
+<li><a href="#%E6%8F%8F%E8%BF%B0%E8%B4%9F%E8%BD%BD">描述负载</a></li>
+<li><a href="#%E6%8F%8F%E8%BF%B0%E6%80%A7%E8%83%BD">描述性能</a></li>
+<li><a href="#%E5%BA%94%E5%AF%B9%E8%B4%9F%E8%BD%BD%E5%A2%9E%E5%8A%A0%E7%9A%84%E6%96%B9%E6%B3%95">应对负载增加的方法</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%AF%E7%BB%B4%E6%8A%A4%E6%80%A7">可维护性</a>
+<ul>
+<li><a href="#%E5%8F%AF%E8%BF%90%E7%BB%B4%E6%80%A7">可运维性</a></li>
+<li><a href="#%E7%AE%80%E5%8D%95%E6%80%A7">简单性</a></li>
+<li><a href="#%E5%8F%AF%E6%BC%94%E5%8C%96%E6%80%A7">可演化性</a></li>
+</ul>
+</li>
+<li><a href="#%E5%B0%8F%E7%BB%93">小结</a></li>
+</ul>
+</li>
+</ul>
+</p>
+<h2 id="认识数据系统">认识数据系统</h2>
+<p>如今很多的应用程序是“数据密集型”而非“计算密集型”，单纯的硬件能力几乎已经不再是瓶颈，更大的问题通常来自数据量、数据复杂程度和数据变化速度。</p>
+<p>而一个数据密集型应用通常也是基于一些常见的基础组件，例如：</p>
+<ul>
+<li>
+<p>数据库：存储数据，方便以后再次访问。</p>
+</li>
+<li>
+<p>缓存：存储操作代价昂贵的结果，加速下一次访问。</p>
+</li>
+<li>
+<p>索引：允许用户通过关键词搜索数据，或者按照各种条件过滤。</p>
+</li>
+<li>
+<p>流处理：将数据持续发送给别的进程来进行异步处理。</p>
+</li>
+<li>
+<p>批处理：定期地处理大量积累的数据。</p>
+</li>
+</ul>
+<p>为什么这些功能各异的组件都属于“数据系统”的范畴？</p>
+<ol>
+<li>
+<p>数据的存储和处理组件逐渐交融。</p>
+<p>例如作为数据库的Redis常被拿来用作消息队列；作为消息队列的Kafka又提供了类似数据库的持久化保证。</p>
+</li>
+<li>
+<p>一个应用程序往往需要使用多种组件，程序的代码需要能够将多种组件结合在一起。</p>
+<p>例如，如果在应用程序级做缓存，用数据库来持久化数据，那么程序代码需要保持缓存和数据库之间的数据同步，如下图所示。<img src="https://pikameow.github.io/post-images/image-20220813213329123.png" alt="" loading="lazy"></p>
+<p>也就是说，应用程序使用了底层的这些基础组件，构建了一个新的、专用的数据系统，并且这个数据系统对外提供服务（例如暴露API）时会提供各种保证，例如缓存能够保证写时同步等。</p>
+</li>
+</ol>
+<p>那么如何使用这些基础组件来设计并实现一个完整的数据系统，有很多因素需要考虑，往往需要做出各种权衡，这里我们关注最重要的三个因素：可靠性、可扩展性和可维护性。</p>
+<h2 id="可靠性">可靠性</h2>
+<p><strong>“即使发生了某些错误，系统仍可以继续正常工作”</strong></p>
+<p>一个具有可靠性的应用程序应该是怎样的？</p>
+<ol>
+<li>
+<p>程序具有用户所期待的功能。</p>
+</li>
+<li>
+<p>可以容忍用户错误使用或不正确地使用程序。</p>
+</li>
+<li>
+<p>程序性能能够应对典型场景的负载压力和数据量。</p>
+</li>
+<li>
+<p>程序能防止任何未经授权的访问和滥用。</p>
+</li>
+</ol>
+<p>故障(fault)：指系统中的一个组件不能按照期望的行为运行。</p>
+<p>失效(failure)：整个系统无法向用户提供需要的服务。</p>
+<p>通常来说，故障是无法完全避免的，因此我们希望能够设计一个能够容忍故障的系统(fault-tolerant)，能够发现并处理故障，避免引发系统失效。</p>
+<p>为了能够设计这样的系统，通常开发过程中会刻意地通过一些手段触发故障，然后对各种故障给出合理的处理方式，从而提高系统的容错能力，很多bug就是由于错误处理不当造成的。这样当真实故障发生时，能够正确被处理。</p>
+<h3 id="硬件故障">硬件故障</h3>
+<p>硬件故障是系统故障中很重要的一部分，例如磁盘损坏、电源终端、网络中断等，尤其是当许多硬件同时运行时，这种故障几乎一直在发生。</p>
+<p>一个通用的降低硬件故障引发系统失败的方法是硬件冗余(redundancy)。例如将多个硬盘组成RAID阵列、提供备用电源、使用支持热交换的CPU组合等。当其中一个硬件宕机之后，备份的硬件能够立刻顶上，给损坏的硬件更换的时间。实践证明这种方式对于系统的持续运行是很有帮助的。</p>
+<p>另外一个途径是在软件层面使用一些容错技术，使得部分硬件故障能够被处理。例如在一个拥有多台机器的系统上，如果需要对机器进行升级，那么相比于全部停止提供服务，还可以逐个地进行升级(rolling update)，保证整个系统还在持续提供服务。</p>
+<h3 id="软件错误">软件错误</h3>
+<p>通常我们认为硬件故障都是各自独立的，一个机器上的硬盘损坏与另一个机器几乎没有关系。但是软件错误则不同，这些错误更难以察觉（通常在corner case中被发现），并且更倾向于导致整个系统各个部分都出现问题。例如：</p>
+<ul>
+<li>
+<p>一个进程用尽了所有的共享资源，包括CPU、内存、网络带宽等。</p>
+</li>
+<li>
+<p>程序所依赖的一些服务开始出错、无响应等。</p>
+</li>
+<li>
+<p>级联故障。一个组件上的小错误导致更多其它组件出现错误。</p>
+</li>
+</ul>
+<p>出现这些软件错误的一个重要的原因是：在开发过程中，对程序运行的环境做出了一些假设，这些假设大多数时候是合理的，但是在极少情况下是错误的。</p>
+<p>对于这种错误，没有什么快速的解决方案，但是有很多小的手段可能会有所帮助，例如：开发时认真检查依赖的假设条件、多个进程之间进行隔离、允许进程自动重启、不断地检测系统运行的行为等。</p>
+<h3 id="人为错误">人为错误</h3>
+<p>在软件周期里，人是最不可靠的因素。为了尽可能消除人为因素对程序造成的负面影响，有以下一些途径：</p>
+<ul>
+<li>以最小出错的方式来设计系统。例如精心设计抽象层、API等，使得“做正确的事”更简单。但如果限制过多，人们就会想要绕过它。</li>
+<li>设法分离最容易出错的地方、容易引发故障的接口。例如提供一个Sandbox环境进行试用。</li>
+<li>充分的测试。从单元测试到集成测试，以及手动测试。</li>
+<li>提供快速的恢复机制，来应对人为失误。例如快速回滚配置。</li>
+<li>实现监控系统，监控性能指标、异常等。类似其它领域的遥测(Telemetry)。</li>
+<li>进行程序的规范化开发管理，并进行人员培训。</li>
+</ul>
+<h2 id="可扩展性">可扩展性</h2>
+<p><strong>即使负载增加，系统也能够正常运转</strong></p>
+<h3 id="描述负载">描述负载</h3>
+<p>在讨论可扩展性的时候，首先要明确，对于当前的系统，负载到底意味着什么？它通常可以由若干个参数来描述。选择什么参数取决于系统的功能，例如对于服务器来说，每秒请求处理数是很重要的。</p>
+<p>以twitter为例，用户发布tweet的频率平均4.6k/s，而用户浏览主页时间线的频率平均300k/s。因此性能瓶颈在于巨大的“扇出(fan-out)”，即每个用户会关注很多人，也会被很多人关注。为了让用户查看时间线时，尽可能缩小延迟，有2种设计方案：</p>
+<ol>
+<li>
+<p>采用关系型数据模型。</p>
+<p>存在一个全局的tweets表、一个表示关注关系的follows表，一个用户信息的users表。<br>
+用户发送tweet就是向tweets表中添加一行记录。<br>
+用户读取时间线时，首先从follows表中获取该用户的所有关注，然后从tweets表中找出所有关注者的tweet，最后按照发送时间排序。<img src="https://pikameow.github.io/post-images/image-20220813213431129.png" alt="" loading="lazy"></p>
+</li>
+<li>
+<p>采用数据流水线方式。</p>
+<p>同样存在一个全局的tweets表，但每个用户的时间线都会维护成为一个缓存。<br>
+用户发送tweet时，先向tweets表中添加，然后会推送到它的每个粉丝的时间线缓存中。<br>
+用户读取时间线时，直接从他自己的时间线缓存中读取tweets即可。<img src="https://pikameow.github.io/post-images/image-20220813213448525.png" alt="" loading="lazy"></p>
+</li>
+</ol>
+<p>第2种方案因为在用户发送tweet时做了更多的事情，因此用户读时间线的性能可以有效得到提升。但是有一个问题是，现实中关注数量的分布是极度不均衡的，对于有1000万粉丝的用户，发送tweet是就会有巨大的写入操作。</p>
+<p>后来twitter将这2种方案做了融合，对大部分用户采用方案2，但对粉丝数巨大的用户，仍然采用方案1。</p>
+<p>在这个例子中，每个用户粉丝数的<strong>分布情况</strong>是一个关键的负载参数，因为它决定了扇出数，进而决定了哪种方案拥有更好的性能。</p>
+<h3 id="描述性能">描述性能</h3>
+<p>当负载增大时，通常有2种思考方式：</p>
+<ol>
+<li>若系统资源不变，系统性能会怎样？</li>
+<li>若要性能不变，需要增加多少资源？</li>
+</ol>
+<p>无论如何考虑，都先要能够描述系统的性能。例如，在批处理系统中，吞吐量(throughput)是一个关键的指标；而在线系统中，服务的响应时间(response time)往往很重要。</p>
+<p>以响应时间为例，由于各种随机因素的影响，响应时间往往会有一些抖动，例如TCP重传、缺页中断、磁盘IO等。而相比于常用的平均响应时间来说，采用百分位数是更加合适的。例如中位数响应时间(p50)就意味着有一半的请求花费不到该时间。</p>
+<figure data-type="image" tabindex="2"><img src="https://pikameow.github.io/post-images/image-20220813213456171.png" alt="" loading="lazy"></figure>
+<p>而在成熟的产品中，也会使用百分位数来描述SLA(Service Level Agreements，服务质量协议)。例如声明说响应时间中位数(p50)小于200ms，而p99小于1s，且至少p999的时间都要达到这个指标。</p>
+<p>在使用高百分数响应时间时，延迟排队是一个很重要的影响因素。因为服务器并行的程度有限，因此越靠后的请求，处理得越慢，称为“队头阻塞”。即使后续请求很简单，在客户端也会观察到很长的响应时间。</p>
+<h3 id="应对负载增加的方法">应对负载增加的方法</h3>
+<p>那么当负载参数增加的时候，应该如何将性能指标保持良好呢？</p>
+<p>首先，如果实际负载达到了预设值的10倍时，从设计架构的层面上就已经无法应付了。因此每增加一个数量级的负载，需要重新设计架构。</p>
+<p>其次，我们需要在垂直扩展(使用更强的机器)和水平扩展(加机器)之间取舍。通常垂直扩展更简单，但是能够应对的负载增加程度有限，往往还是要进行水平扩展。对水平扩展来说，如果扩展的是无状态服务(stateless)会比较简单，如果扩展的是有状态(stateful)服务会更复杂。</p>
+<p>对于超大系统来说，往往是对特定应用定制的，很难有通用的架构。通常需要在读取写入量、访问模式等中间做取舍。例如100k/s的1KB大小的请求，和3/s的2GB大小的请求，即使吞吐率相同，架构也会大相径庭。</p>
+<p>可扩展的架构通常是由通用模块逐步构建得到，通过这些通用模块和常见的架构模式进行研究，对设计可扩展架构是很有帮助的。</p>
+<h2 id="可维护性">可维护性</h2>
+<p>软件开发的大部分成本，都花在投入运行的阶段，包括维护和故障修复、适配新的平台和场景、增加新功能等。</p>
+<p>为了尽可能减少维护期间的麻烦，在设计的时候就应该开始考虑，避免造出容易过期的系统。有三个原则需要关注：</p>
+<ul>
+<li>可运维性：方便后续的运维。</li>
+<li>简单性：简化系统内部实现的复杂性。</li>
+<li>可演化性：使得后续工程师也能够轻松改进系统，并适配到非典型场景中，也称为可延伸性、易修改性、可塑性。</li>
+</ul>
+<h3 id="可运维性">可运维性</h3>
+<p>良好的可操作性能够有效化解软件的局限性。而在数据系统设计时就考虑到可操作性，是很有必要的。</p>
+<p>例如提供对系统运行时行为和内部指标的监测、易出错的操作尽量自动化、良好的文档和操作模式、出现故障时能够尝试自我修复等。</p>
+<h3 id="简单性">简单性</h3>
+<p>当项目越来越大时，很容易变得复杂。例如状态空间发生膨胀、模块紧耦合、令人纠结的相互依赖、为了性能采取的特殊处理等。</p>
+<p>简化系统设计并不是指减少系统的功能，而是“消除意外方面的复杂性”，即并非软件固有或者被用户感知，而是实现本身衍生出来的问题。</p>
+<p>消除这种意外复杂性最好的方法是抽象。一个好的设计抽象可以隐藏大量的细节，并提供干净易懂的结构。而且好的抽象往往更容易被各种不同程序复用。</p>
+<p>例如高级编程语言就是一种抽象，隐藏了机器汇编代码、CPU寄存器和系统调用等细节；SQL语言这种抽象隐藏了内部复杂的磁盘和内存数据结构，以及多客户端并发请求。</p>
+<p>通过研究如何设计好的抽象，至少能够将大型系统的一部分抽象为定义明确、可重用的组件，帮助系统的复杂度降低到可控的级别，是很有意义的。</p>
+<h3 id="可演化性">可演化性</h3>
+<p>可演化性是指数据系统级的敏捷性，即当面对一个由多个不同特性的应用或者服务协作构成的大型系统时，也能够很方便地实现新的系统需求。</p>
+<h2 id="小结">小结</h2>
+<figure data-type="image" tabindex="3"><img src="https://pikameow.github.io/post-images/image-20220813214305224.png" alt="" loading="lazy"></figure>
+
+                </div>
+            </article>
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">May you shine up with the stars</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
